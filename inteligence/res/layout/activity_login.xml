@@ -1,0 +1,144 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/textura_android"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/bem_vindo"
+            android:textColor="#000000"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/info"
+            android:textColor="#000000"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/editTextLogin"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/dica_login"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/textViewSenha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/senha"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/editTextSenha"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/dica_senha"
+        android:inputType="textPassword" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/chbxMostrarSenha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="MostrarSenha"
+            android:text="@string/Mostrar_senha"
+            android:textSize="12sp" />
+
+        <CheckBox
+            android:id="@+id/manterConectado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="manterConectado"
+            android:text="@string/manter_conectado"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="right"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/buttonLogar"
+            style="@style/AppTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="logar"
+            android:background="#FF8C00"
+            android:layout_marginRight="15sp"
+            android:layout_marginTop="10sp"
+            android:text="@string/logar" />
+
+        <Button
+            android:id="@+id/buttonLimpar"
+            style="@style/AppTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10sp"
+            android:onClick="limpar"
+            android:layout_marginTop="10sp"
+            android:background="#FF8C00"
+            android:text="@string/limpar" />
+
+        <Button
+            android:id="@+id/buttonSair"
+            style="@style/AppTheme"
+            android:layout_marginRight="5sp"
+            android:layout_marginTop="10sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FF8C00"
+            android:onClick="cancelar"
+            android:text="@string/sair" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#0000ff"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/bem_vindo"
+            android:textColor="#000000"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/info"
+            android:textColor="#000000"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+</LinearLayout>
