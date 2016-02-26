@@ -53,7 +53,7 @@
   <string name="history_empty">空的</string>
   <string name="history_empty_detail">没有条码扫描已记录</string>
   <string name="history_send">发送历史</string>
-  <string name="ic_menu_upload">Upload All</string>
+  <string name="history_upload_text">发送历史</string>
   <string name="history_title">历史</string>
   <string name="menu_encode_mecard">使用MECARD</string>
   <string name="menu_encode_vcard">使用vCard</string>

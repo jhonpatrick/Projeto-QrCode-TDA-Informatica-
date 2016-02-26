@@ -324,11 +324,19 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
   @Override
 	public void onBackPressed() {
+	 // if(Ac){
+		  
+	  //}
 		// TODO Auto-generated method stub
 		Intent voltar = new Intent(this, MainActivity.class);
 		startActivity(voltar);
 		finish();
 	}
+  
+  private String getDateTime() { 
+	  DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
+	  Date date = new Date(); return dateFormat.format(date); 
+  } 
   
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
@@ -410,12 +418,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
   }
   
-  //pegando a data do sistema
-  
-  private String getDateTime() { 
-	  DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
-	  Date date = new Date(); return dateFormat.format(date); 
-  } 
 
   /**
    * A valid barcode has been found, so give an indication of success and show the results.
@@ -459,12 +461,14 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
       case NATIVE_APP_INTENT:
       case PRODUCT_SEARCH_LINK:
         handleDecodeExternally(rawResult, resultHandler, barcode);
+        restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
         break;
       case ZXING_LINK:
         if (scanFromWebPageManager == null || !scanFromWebPageManager.isScanFromWebPage()) {
           handleDecodeInternally(rawResult, resultHandler, barcode);
         } else {
           handleDecodeExternally(rawResult, resultHandler, barcode);
+          restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
         }
         break;
       case NONE:
@@ -477,6 +481,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
           restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
         } else {
           handleDecodeInternally(rawResult, resultHandler, barcode);
+          restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
         }
         break;
     }
