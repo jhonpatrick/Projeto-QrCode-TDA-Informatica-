@@ -16,19 +16,13 @@
 
 package com.google.zxing.client.android.history;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.ClipData.Item;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -287,7 +281,8 @@ public final class HistoryActivity extends ListActivity {
 	
 	//metodo de enviar dados para o servidor
 	public void enviarDados(){
-		String sql = "SELECT qrcode, ";
+		
+		
 	}
 	
 	// metodo http

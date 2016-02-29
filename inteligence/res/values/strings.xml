@@ -23,9 +23,10 @@
     <string name="bem_vindo">Seja bem vindo(a) ao TDA QR Code</string>
     <string name="info">Faça seu login aqui</string>
     <string name="login">Login: </string>
-    <string name="dica_login">Digite seu login</string>
+    <string name="dica_login">Digite seu email</string>
     <string name="senha">Senha: </string>
-    <string name="dica_senha">Digite sua senha</string>
+	<string name="inteligence">img_inteligence</string>    
+    <string name="dica_senha">Senha</string>
     <string name="logar">Logar</string>
     <string name="limpar">Limpar</string>
     <string name="sair">Sair</string>
