@@ -7,9 +7,10 @@
     <ImageView
         android:layout_width="291dp"
         android:layout_height="96dp"
-       android:layout_gravity="center"
+        android:layout_gravity="center"
         android:contentDescription="@string/inteligence"
-        android:src="@drawable/logo_hor_branca2" />
+        android:src="@drawable/logo_hor_branca2"
+        android:visibility="visible" />
 
     <EditText
         android:id="@+id/editTextLogin"
