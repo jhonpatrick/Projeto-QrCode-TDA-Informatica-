@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:background="#222222"
+        android:orientation="vertical" >
+        
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:layout_gravity="center"
+        android:background="#222222"
+        android:contentDescription="@string/inteligence"
+        android:src="@drawable/logo_principal_branca" />
+
+    <EditText
+        android:id="@+id/editTextLogin"
+        android:layout_width="234dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:drawableLeft="@drawable/icon_usu"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:hint="@string/dica_login"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/editTextSenha"
+        android:layout_width="234dp"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/icon_key"
+        android:ems="10"
+        android:hint="@string/dica_senha"
+        android:layout_gravity="center
+        android:inputType="textPassword" />
+
+    <CheckBox
+        android:id="@+id/chbxMostrarSenha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="mostrarSenha"
+        android:text="@string/Mostrar_senha"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/buttonLogar"
+        style="@style/ShareButton"
+        android:layout_width="258dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#e08236"
+        android:onClick="logar"
+        android:text="@string/logar"
+        android:textSize="16sp" />
+
+</LinearLayout>

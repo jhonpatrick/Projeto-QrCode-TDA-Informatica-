@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scr_view1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/textura_android" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp"
+        android:text="@string/tda_qrcode"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:text="@string/digitalizar"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/imgb_digitalizar"
+        android:layout_width="90sp"
+        android:layout_height="70sp"
+        android:layout_alignRight="@+id/textView2"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="21dp"
+        android:background="#FF8C00"
+        android:contentDescription="@string/app_name"
+        android:onClick="digitalizar"
+        android:src="@android:drawable/ic_menu_camera" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@+id/imgb_digitalizar"
+        android:layout_marginTop="20dp"
+        android:text="@string/historico"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/imgb_historico"
+        android:layout_width="90sp"
+        android:layout_height="70sp"
+        android:layout_alignLeft="@+id/imgb_digitalizar"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="21dp"
+        android:background="#FF8C00"
+        android:contentDescription="@string/app_name"
+        android:onClick="historicoQr"
+        android:src="@android:drawable/ic_menu_sort_by_size" />
+
+</RelativeLayout>

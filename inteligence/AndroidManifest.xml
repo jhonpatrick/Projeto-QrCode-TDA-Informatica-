@@ -18,16 +18,19 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.hardware.camera.autofocus" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
 
  <application
         android:allowBackup="true"
-        android:icon="@drawable/icone_branco"
         android:screenOrientation="portrait"
-        android:theme="@style/AppTheme" >
+        android:icon="@drawable/icone"
+        android:name="@string/app_name"
+		android:theme="@style/AppTheme">
         <activity
             android:name="br.com.inteligence.ActivityLogin"
-            android:label="" >
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,35 +51,22 @@
         </activity>
         
         <activity
-            android:name="br.com.inteligence.MainActivity"
-            android:label="@string/app_name"
+            android:name="br.com.inteligence.Intelligence"
+            android:icon="@drawable/logo_hor_branca1"
             android:screenOrientation="portrait" >
         </activity>
         
         <activity
             android:name="com.google.zxing.client.android.history.HistoryActivity"
             android:label="@string/title_activity_historico"
+            android:icon="@drawable/icone_branco"
             android:screenOrientation="portrait" >
         </activity>
-        <!--
-        <activity 
-            android:name="com.google.zxing.client.android.share.ShareActivity"
-            android:label="@string/compartilhar"
+        
+        <activity
+            android:name="br.com.inteligence.TelaDeAtividades"
+            android:icon="@drawable/logo_hor_branca1"
             android:screenOrientation="portrait" >
         </activity>
-        <activity 
-            android:name="com.google.zxing.client.android.PreferencesActivity"
-            android:label="@string/preferencias"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity 
-            android:name="com.google.zxing.client.android.HelpActivity"
-            android:label="@string/ajuda"
-            android:screenOrientation="portrait">
-        </activity>
-
-
-        -->
     </application>
-
 </manifest>

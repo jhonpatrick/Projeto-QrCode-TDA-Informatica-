@@ -16,7 +16,6 @@
 
 package com.google.zxing.client.android.history;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -34,7 +33,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import br.com.inteligence.MainActivity;
+import br.com.inteligence.Intelligence;
 import br.com.inteligence.R;
 
 import com.google.zxing.client.android.CaptureActivity;
@@ -47,7 +46,6 @@ public final class HistoryActivity extends ListActivity {
 	private HistoryManager historyManager;
 	private ArrayAdapter<HistoryItem> adapter;
 	private CharSequence originalTitle;
-
 
 	@Override
 	protected void onCreate(Bundle icicle) {
@@ -86,7 +84,8 @@ public final class HistoryActivity extends ListActivity {
 			Intent intent = new Intent(this, CaptureActivity.class);
 			intent.putExtra(Intents.History.ITEM_NUMBER, position);
 			setResult(Activity.RESULT_OK, intent);
-			Toast.makeText(this, "Clique e segure para vê opções!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Clique e segure para vê opções!",
+					Toast.LENGTH_SHORT).show();
 			// finish();
 		}
 	}
@@ -95,39 +94,38 @@ public final class HistoryActivity extends ListActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenu.ContextMenuInfo menuInfo) {
 		int position = ((AdapterView.AdapterContextMenuInfo) menuInfo).position;
-		
-			if (position >= adapter.getCount()|| adapter.getItem(position).getResult() != null) {
-				menu.add(Menu.NONE, position, position, R.string.history_clear_one_history_text);
-				menu.add(Menu.NONE, position, position, R.string.history_enviar_um);
-			}
-		} // else it's just that dummy "Empty" message
 
+		if (position >= adapter.getCount()
+				|| adapter.getItem(position).getResult() != null) {
+			menu.add(Menu.NONE, position, position,
+					R.string.history_clear_one_history_text);
+			menu.add(Menu.NONE, position, position, R.string.history_enviar_um);
+		}
+	} // else it's just that dummy "Empty" message
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		
-		/*if(item.getItemId() == R.id.menu_history_clear_text){
-				
-			int position = item.getItemId();
-		    historyManager.deleteHistoryItem(position);
-		    Toast.makeText(this, "Apagado com sucesso!", Toast.LENGTH_SHORT).show();
-		    reloadHistoryItems();
-		    return true;
-		    
-		}else if(item.getItemId() == R.id.menu_history_upload_text){
 
-			int position = item.getItemId();
-			Toast.makeText(this, "Enviado com sucesso!", Toast.LENGTH_SHORT).show();
-		    historyManager.deleteHistoryItem(position);
-		    reloadHistoryItems();
-		    return true;
-		    
-		}
-	    return true;*/
-		
+		/*
+		 * if(item.getItemId() == R.id.menu_history_clear_text){
+		 * 
+		 * int position = item.getItemId();
+		 * historyManager.deleteHistoryItem(position); Toast.makeText(this,
+		 * "Apagado com sucesso!", Toast.LENGTH_SHORT).show();
+		 * reloadHistoryItems(); return true;
+		 * 
+		 * }else if(item.getItemId() == R.id.menu_history_upload_text){
+		 * 
+		 * int position = item.getItemId(); Toast.makeText(this,
+		 * "Enviado com sucesso!", Toast.LENGTH_SHORT).show();
+		 * historyManager.deleteHistoryItem(position); reloadHistoryItems();
+		 * return true;
+		 * 
+		 * } return true;
+		 */
+
 		final int position = item.getItemId();
-		
-		
+
 		AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
 		builder1.setMessage("Enviar?");
 		builder1.setCancelable(true);
@@ -135,20 +133,21 @@ public final class HistoryActivity extends ListActivity {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int i2) {
-						
+
 						/*
 						 * substituir tudo pelo metodo enviarDados()
 						 */
-						
+
 						historyManager.deleteHistoryItem(position);
 						dialog.dismiss();
 						reloadHistoryItems();
-//						Toast.makeText(this, "Enviando todos...", Toast.LENGTH_SHORT)
-//						.show();
+						// Toast.makeText(this, "Enviando todos...",
+						// Toast.LENGTH_SHORT)
+						// .show();
 					}
 				});
 		Toast.makeText(this, "Enviados com sucesso!", Toast.LENGTH_SHORT)
-		.show();
+				.show();
 		builder1.setNegativeButton(R.string.button_cancel, null);
 		builder1.show();
 		return true;
@@ -170,7 +169,7 @@ public final class HistoryActivity extends ListActivity {
 			/*
 			 * enviar todos os qr's lidos
 			 */
-			
+
 			AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
 			builder1.setMessage(R.string.msg_confirmar_envio);
 			builder1.setCancelable(true);
@@ -181,40 +180,35 @@ public final class HistoryActivity extends ListActivity {
 							historyManager.clearHistory();
 							dialog.dismiss();
 							finish();
-//							Toast.makeText(this, "Enviando todos...", Toast.LENGTH_SHORT)
-//							.show();
+							// Toast.makeText(this, "Enviando todos...",
+							// Toast.LENGTH_SHORT)
+							// .show();
 						}
 					});
 			Toast.makeText(this, "Enviados com sucesso!", Toast.LENGTH_SHORT)
-			.show();
+					.show();
 			builder1.setNegativeButton(R.string.button_cancel, null);
 			builder1.show();
-			
-			
-			/*CharSequence history = historyManager.buildHistory();
-			Parcelable historyFile = HistoryManager.saveHistory(history
-					.toString());
-			if (historyFile == null) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setMessage(R.string.msg_unmount_usb);
-				builder.setPositiveButton(R.string.button_ok, null);
-				builder.show();
-			} else {
-				Intent intent = new Intent(Intent.ACTION_SEND,
-						Uri.parse("mailto:"));
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-				String subject = getResources().getString(
-						R.string.history_email_title);
-				intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-				intent.putExtra(Intent.EXTRA_TEXT, subject);
-				intent.putExtra(Intent.EXTRA_STREAM, historyFile);
-				intent.setType("text/csv");
-				try {
-					startActivity(intent);
-				} catch (ActivityNotFoundException anfe) {
-					Log.w(TAG, anfe.toString());
-				}
-			}*/
+
+			/*
+			 * CharSequence history = historyManager.buildHistory(); Parcelable
+			 * historyFile = HistoryManager.saveHistory(history .toString()); if
+			 * (historyFile == null) { AlertDialog.Builder builder = new
+			 * AlertDialog.Builder(this);
+			 * builder.setMessage(R.string.msg_unmount_usb);
+			 * builder.setPositiveButton(R.string.button_ok, null);
+			 * builder.show(); } else { Intent intent = new
+			 * Intent(Intent.ACTION_SEND, Uri.parse("mailto:"));
+			 * intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+			 * String subject = getResources().getString(
+			 * R.string.history_email_title);
+			 * intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+			 * intent.putExtra(Intent.EXTRA_TEXT, subject);
+			 * intent.putExtra(Intent.EXTRA_STREAM, historyFile);
+			 * intent.setType("text/csv"); try { startActivity(intent); } catch
+			 * (ActivityNotFoundException anfe) { Log.w(TAG, anfe.toString()); }
+			 * }
+			 */
 			break;
 		case R.id.menu_history_clear_text:
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -238,69 +232,63 @@ public final class HistoryActivity extends ListActivity {
 		return true;
 	}
 
-	
-	
-	//meus metodos
-	
-	/*public  boolean verificaConexao() {
-	    boolean conectado;
-		ConnectivityManager conectivtyManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    if (conectivtyManager.getActiveNetworkInfo() != null
-	            && conectivtyManager.getActiveNetworkInfo().isAvailable()
-	            && conectivtyManager.getActiveNetworkInfo().isConnected()) {
-	    	conectado = true;
-	    	Toast.makeText(this, "Conectado!", Toast.LENGTH_LONG).show();
-	    } else {
-	        conectado = false;
-	        Toast.makeText(this, "Não Conectado! Verifique sua conexão com a internet", Toast.LENGTH_LONG).show();
-	    }
-	    return conectado;
-	}*/
-	
-	// verifica se tem conexão 
-	public boolean netWorkdisponibilidade(Context cont){
-        boolean conectado = false;
-        ConnectivityManager conmag;
-        conmag = (ConnectivityManager)cont.getSystemService(Context.CONNECTIVITY_SERVICE);
-        conmag.getActiveNetworkInfo();
-        //Verifica o WIFI
-        if(conmag.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected()){
-            conectado = true;
-            Toast.makeText(this, "WI-Fi Conectado!", Toast.LENGTH_LONG).show();
-        }
-       //Verifica o 3G
-        else if(conmag.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected()){
-            conectado = true;
-            Toast.makeText(this, "3G Conectado!", Toast.LENGTH_LONG).show();
-        }
-        else{
-            conectado = false;
-        }
-        return conectado;
-    }
-	
-	//metodo de enviar dados para o servidor
-	public void enviarDados(){
-		
-		
+	// meus metodos
+
+	/*
+	 * public boolean verificaConexao() { boolean conectado; ConnectivityManager
+	 * conectivtyManager = (ConnectivityManager)
+	 * getSystemService(Context.CONNECTIVITY_SERVICE); if
+	 * (conectivtyManager.getActiveNetworkInfo() != null &&
+	 * conectivtyManager.getActiveNetworkInfo().isAvailable() &&
+	 * conectivtyManager.getActiveNetworkInfo().isConnected()) { conectado =
+	 * true; Toast.makeText(this, "Conectado!", Toast.LENGTH_LONG).show(); }
+	 * else { conectado = false; Toast.makeText(this,
+	 * "Não Conectado! Verifique sua conexão com a internet",
+	 * Toast.LENGTH_LONG).show(); } return conectado; }
+	 */
+
+	// verifica se tem conexão
+	public boolean netWorkdisponibilidade(Context cont) {
+		boolean conectado = false;
+		ConnectivityManager conmag;
+		conmag = (ConnectivityManager) cont
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		conmag.getActiveNetworkInfo();
+		// Verifica o WIFI
+		if (conmag.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected()) {
+			conectado = true;
+			Toast.makeText(this, "WI-Fi Conectado!", Toast.LENGTH_LONG).show();
+		}
+		// Verifica o 3G
+		else if (conmag.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+				.isConnected()) {
+			conectado = true;
+			Toast.makeText(this, "3G Conectado!", Toast.LENGTH_LONG).show();
+		} else {
+			conectado = false;
+		}
+		return conectado;
 	}
-	
+
+	// metodo de enviar dados para o servidor
+	public void enviarDados() {
+
+	}
+
 	// metodo http
-	
-	public void postHttp(){
-		
+
+	public void postHttp() {
+
 	}
-	
+
+	// metodo sair...
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		Intent voltar = new Intent(this, MainActivity.class);
-		startActivity(voltar);
-		finish();
-	}	
-	
-	  //pegando a data do sistema
-	  
-	 
-	
+		super.onBackPressed();
+		this.finishActivity(0);
+	}
+
+	// pegando a data do sistema
+
 }

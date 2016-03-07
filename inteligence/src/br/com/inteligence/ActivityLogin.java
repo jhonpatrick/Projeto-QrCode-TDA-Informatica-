@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.view.View;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -48,47 +49,25 @@ public class ActivityLogin extends Activity {
 
 	public void logar(View view) {
 		// recebendo o texto dos componetes
+		 
+		boolean conexao = verificaConexao();
+		if (conexao == true) {
 
-		// tratando os evt
-
-		//if (verificaConexao() == false) {
-			//Toast.makeText(con, "Sertifique-se de sua conexão com a internet", Toast.LENGTH_SHORT).show();
-		//} else {
-			
-			new Thread(){
-				public void run(){
+		new Thread() {
+			public void run() {
 					login = (EditText) findViewById(R.id.editTextLogin);
 					senha = (EditText) findViewById(R.id.editTextSenha);
-					
-					postHttp(login.getText().toString(), senha.getText().toString());
 
-					
-				}
-			}.start();
-			
-			
-		//}
+					// se tudo estiver certo, manda os dados pro servidor
+					postHttp(login.getText().toString(), senha.getText()
+							.toString());
 
-		
+			}
+		}.start();
 
-	}
-
-	private void tentativas() {
-		--tentativas;
-		// se a tentativa for igual a 0, ou seja, o usuario errar mais de 3
-		// vezes mostrar msg e fecha a aplicação
-		if (tentativas == 0) {
-			// msg
-			Toast.makeText(this, "Suas tentativas acabaram!", Toast.LENGTH_LONG)
-					.show();
-			// fechando a aplicação
-			finish();
 		} else {
-			
-			// /mensagem a ser mostrada caso o usuario erre
-
-			Toast.makeText(this,
-					"Restam apenas " + (tentativas) + " tentativas",
+			Toast.makeText(getBaseContext(),
+					"Não Conectado! Verifique sua conexão com a internet",
 					Toast.LENGTH_LONG).show();
 		}
 	}
@@ -115,7 +94,7 @@ public class ActivityLogin extends Activity {
 				}
 			}
 		});
-		
+
 		// se clicar em Não
 		alerta.setNegativeButton("Não!", new DialogInterface.OnClickListener() {
 			// metodo verifica condição e volta para a aplicação
@@ -125,7 +104,7 @@ public class ActivityLogin extends Activity {
 				dialog.cancel();
 			}
 		});
-		
+
 		// cria o AlertDialog
 		alerta.create();
 		// exibi o AlertDialog
@@ -133,16 +112,16 @@ public class ActivityLogin extends Activity {
 	}
 
 	public void mostrarSenha(View view) {
+		senha = (EditText) findViewById(R.id.editTextSenha);
 		cbxMostarSeha = (CheckBox) findViewById(R.id.chbxMostrarSenha);
-
-		final Object o = new PasswordTransformationMethod();
 
 		cbxMostarSeha.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) { // TODO Auto-generated method stub //
-
+					boolean isChecked) {
+				// TODO Auto-generated method stub
+				Object o = new PasswordTransformationMethod();
 				if (isChecked) {
 					senha.setTransformationMethod(null);
 				} else {
@@ -152,7 +131,7 @@ public class ActivityLogin extends Activity {
 		});
 
 	}
-	
+
 	// metodo sair...
 	@Override
 	public void onBackPressed() {
@@ -179,19 +158,18 @@ public class ActivityLogin extends Activity {
 			runOnUiThread(new Runnable() {
 				public void run() {
 					try {
-						//Toast.makeText(getBaseContext(), resp.toString(), Toast.LENGTH_SHORT).show();
 						if (resp.equals("valido")) {
 
 							Intent intent = new Intent(getBaseContext(),
-									MainActivity.class);
+									Intelligence.class);
 							startActivity(intent);
 							finish();
 
 						} else if (resp.equals("invalido")) {
 
-							//Toast.makeText(getBaseContext(), "Login inválido!", Toast.LENGTH_SHORT).show();
-							tentativas();
-							
+							Toast.makeText(getBaseContext(), "Login inválido!",
+									Toast.LENGTH_SHORT).show();
+
 						}
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
@@ -205,18 +183,18 @@ public class ActivityLogin extends Activity {
 		}
 	}
 
+	// método para vericar conexão com intenet
 	public boolean verificaConexao() {
-		boolean conectado;
+		boolean conectado = false;
 		ConnectivityManager conectivtyManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (conectivtyManager.getActiveNetworkInfo() != null
 				&& conectivtyManager.getActiveNetworkInfo().isAvailable()
 				&& conectivtyManager.getActiveNetworkInfo().isConnected()) {
 			conectado = true;
-			Toast.makeText(this, "Conectado!", Toast.LENGTH_LONG).show();
 		} else {
 			conectado = false;
 			Toast.makeText(this,
-					"Não Conectado! Verifique sua conexão com a internet",
+					"Você não está conectado em nunhuma rede! Verifique sua conexão com a internet",
 					Toast.LENGTH_LONG).show();
 		}
 		return conectado;
