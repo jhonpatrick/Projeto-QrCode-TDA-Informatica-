@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fafafa"
+    android:id="@+id/layout1"
+    tools:context="br.com.intelligence.TelaDeAtividades" >
+
+    <RelativeLayout
+        android:id="@+id/layout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff" >
+
+        <TextView
+            android:id="@+id/txt_info2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/info1" />
+
+        <TextView
+            android:id="@+id/txt_info3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_info2"
+            android:layout_centerHorizontal="true"
+            android:text="@string/info2" />
+
+        <ImageButton
+            android:id="@+id/img_atividade"
+            android:layout_width="55dp"
+            android:layout_height="45dp"
+            android:layout_alignRight="@+id/img_eventos"
+            android:layout_below="@+id/spn_eventos"
+            android:layout_marginTop="46dp"
+            android:background="#fafafa"
+            android:contentDescription="@string/img_atividade"
+            android:src="@android:drawable/checkbox_on_background" />
+
+        <ImageButton
+            android:id="@+id/img_eventos"
+            android:layout_width="55dp"
+            android:layout_height="45dp"
+            android:layout_alignBottom="@+id/spn_eventos"
+            android:layout_toLeftOf="@+id/spn_eventos"
+            android:background="#fafafa"
+            android:contentDescription="@string/img_eventos"
+            android:src="@android:drawable/ic_menu_today" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txt_info2"
+            android:layout_alignRight="@+id/spn_atividades"
+            android:layout_below="@+id/img_atividade"
+            android:layout_marginTop="31dp"
+            android:background="#ff7c2a"
+            android:onClick="iniciar"
+            style="@style/ShareButton"
+            android:textSize="16sp"
+            android:text="@string/iniciar" />
+
+        <Spinner
+            android:id="@+id/spn_atividades"
+            android:layout_width="180dp"
+            android:layout_height="45dp"
+            android:layout_above="@+id/button1"
+            android:layout_alignLeft="@+id/spn_eventos"
+            android:background="#fafafa"
+            android:contentDescription="@string/info_atividade"
+            android:padding="@dimen/half_padding" />
+
+        <Spinner
+            android:id="@+id/spn_eventos"
+            android:layout_width="180dp"
+            android:layout_height="45dp"
+            android:layout_alignRight="@+id/txt_info2"
+            android:layout_below="@+id/txt_info3"
+            android:layout_marginTop="20dp"
+            android:background="#fafafa"
+            android:contentDescription="@string/info_eventos"
+            android:padding="@dimen/half_padding" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
