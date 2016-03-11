@@ -5,13 +5,14 @@
     android:background="#fafafa" >
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/rld_intelli_2"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/rld_intelli_2"
         android:layout_marginTop="18dp"
+        android:textSize="15sp"
         android:text="@string/ola_usuario" />
 
     <RelativeLayout
@@ -46,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="20dp"
+            android:textSize="15sp"
             android:layout_centerHorizontal="true"
             android:text="@string/bem_vindo" />
 

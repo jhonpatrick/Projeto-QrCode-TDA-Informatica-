@@ -1,7 +1,7 @@
 INDEX VERSION 1.126+C:\Users\MarcosJr\Desktop\nãoApagar\Projeto-QrCode-TDA-Informatica-\.metadata\.plugins\org.eclipse.jdt.core
-3546289798.index
-4211829582.index
-2161076774.index
 678966108.index
-4075258795.index
 3838646498.index
+2161076774.index
+4211829582.index
+4075258795.index
+3546289798.index

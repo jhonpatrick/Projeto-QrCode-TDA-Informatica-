@@ -23,8 +23,10 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.ParseException;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
@@ -38,7 +40,7 @@ public class ActivityLogin extends Activity {
 
 	EditText login, senha;
 	// qnt de tentativas
-	CheckBox cbxMostarSeha, cbxManterConectado;
+	CheckBox cbxMostarSeha;
 	Context con;
 
 	@Override
@@ -46,6 +48,25 @@ public class ActivityLogin extends Activity {
 		super.onCreate(savedInstanceState);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login);
+		senha = (EditText) findViewById(R.id.editTextSenha);
+		cbxMostarSeha = (CheckBox) findViewById(R.id.chbxMostrarSenha);
+
+		// metodo mostrar senha
+		cbxMostarSeha.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				// TODO Auto-generated method stub
+				// Object o = new PasswordTransformationMethod();
+				if (!isChecked) {
+					senha.setTransformationMethod(new PasswordTransformationMethod());
+
+				} else {
+					senha.setTransformationMethod(null);
+				}
+			}
+		});
 	}
 
 	public void logar(View view) {
@@ -66,32 +87,8 @@ public class ActivityLogin extends Activity {
 				}
 			}.start();
 
-		} else {
-			Toast.makeText(getBaseContext(),
-					"Não Conectado! Verifique sua conexão com a internet.",
-					Toast.LENGTH_LONG).show();
 		}
-	}
-
-	public void mostrarSenha(View view) {
-		senha = (EditText) findViewById(R.id.editTextSenha);
-		cbxMostarSeha = (CheckBox) findViewById(R.id.chbxMostrarSenha);
-
-		cbxMostarSeha.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-				// TODO Auto-generated method stub
-				Object o = new PasswordTransformationMethod();
-				if (isChecked) {
-					senha.setTransformationMethod(null);
-				} else {
-					senha.setTransformationMethod((TransformationMethod) o);
-				}
-			}
-		});
-
+		
 	}
 
 	// metodo sair...
@@ -104,7 +101,7 @@ public class ActivityLogin extends Activity {
 		this.finishActivity(0);
 	}
 
-	public void postHttp(String login, String senha) {
+	public void postHttp(final String login, final String senha) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(
 				"http://www.inscrevaseonline.com.br/enucomp/testes/qrcode.php");
@@ -124,8 +121,10 @@ public class ActivityLogin extends Activity {
 					try {
 						if (resp.equals("valido")) {
 
-							Intent intent = new Intent(getBaseContext(),
-									Intelligence.class);
+							Bundle passaDados = new Bundle();
+							Intent intent = new Intent(getBaseContext(), Intelligence.class);
+							passaDados.putString("login", login);
+							intent.putExtras(passaDados);
 							startActivity(intent);
 							// finish();
 

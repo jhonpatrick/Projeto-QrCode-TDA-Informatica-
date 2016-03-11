@@ -55,7 +55,6 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editTextSenha"
         android:layout_below="@+id/editTextSenha"
-        android:onClick="mostrarSenha"
         android:text="@string/Mostrar_senha"
         android:textSize="12sp" />
 
