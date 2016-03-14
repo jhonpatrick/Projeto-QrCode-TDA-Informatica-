@@ -34,7 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import br.com.intelligence.R;
-import br.com.intelligence.Intelligence;
+import br.com.intelligence.IntelligenceMain;
 
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.Intents;
@@ -146,7 +146,7 @@ public final class HistoryActivity extends ListActivity {
 						// .show();
 					}
 				});
-		Toast.makeText(this, "Enviados com sucesso!", Toast.LENGTH_SHORT)
+		Toast.makeText(this, "Enviado com sucesso!", Toast.LENGTH_SHORT)
 				.show();
 		builder1.setNegativeButton(R.string.button_cancel, null);
 		builder1.show();
@@ -230,22 +230,7 @@ public final class HistoryActivity extends ListActivity {
 		return true;
 	}
 
-	// meus metodos
 
-	/*
-	 * public boolean verificaConexao() { boolean conectado; ConnectivityManager
-	 * conectivtyManager = (ConnectivityManager)
-	 * getSystemService(Context.CONNECTIVITY_SERVICE); if
-	 * (conectivtyManager.getActiveNetworkInfo() != null &&
-	 * conectivtyManager.getActiveNetworkInfo().isAvailable() &&
-	 * conectivtyManager.getActiveNetworkInfo().isConnected()) { conectado =
-	 * true; Toast.makeText(this, "Conectado!", Toast.LENGTH_LONG).show(); }
-	 * else { conectado = false; Toast.makeText(this,
-	 * "Não Conectado! Verifique sua conexão com a internet",
-	 * Toast.LENGTH_LONG).show(); } return conectado; }
-	 */
-
-	// verifica se tem conexão
 	public boolean netWorkdisponibilidade(Context cont) {
 		boolean conectado = false;
 		ConnectivityManager conmag;

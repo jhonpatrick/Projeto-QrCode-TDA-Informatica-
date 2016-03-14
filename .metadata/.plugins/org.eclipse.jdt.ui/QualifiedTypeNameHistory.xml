@@ -8,8 +8,6 @@
 <fullyQualifiedTypeName name="br.com.inteligence.R.id"/>
 <fullyQualifiedTypeName name="android.view.Window"/>
 <fullyQualifiedTypeName name="br.com.inteligence.Intelligence"/>
-<fullyQualifiedTypeName name="android.content.Context"/>
-<fullyQualifiedTypeName name="android.widget.Toast"/>
 <fullyQualifiedTypeName name="br.com.intelligence.TelaDeAtividades"/>
 <fullyQualifiedTypeName name="java.lang.IllegalArgumentException"/>
 <fullyQualifiedTypeName name="android.database.CursorJoiner.Result"/>
@@ -21,4 +19,17 @@
 <fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="android.widget.TextView"/>
 <fullyQualifiedTypeName name="android.os.Bundle"/>
+<fullyQualifiedTypeName name="br.com.intelligence.Intelligence"/>
+<fullyQualifiedTypeName name="android.widget.Toast"/>
+<fullyQualifiedTypeName name="br.com.intelligence.R.id"/>
+<fullyQualifiedTypeName name="android.view.MenuItem"/>
+<fullyQualifiedTypeName name="br.com.intelligence.R.string"/>
+<fullyQualifiedTypeName name="br.com.intelligence.R.menu"/>
+<fullyQualifiedTypeName name="android.content.SharedPreferences"/>
+<fullyQualifiedTypeName name="android.R"/>
+<fullyQualifiedTypeName name="android.R.id"/>
+<fullyQualifiedTypeName name="android.widget.Button"/>
+<fullyQualifiedTypeName name="br.com.intelligence.IntelligenceMain"/>
+<fullyQualifiedTypeName name="dao.SessionUser"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
 </qualifiedTypeNameHistroy>

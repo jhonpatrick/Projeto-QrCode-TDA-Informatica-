@@ -1,0 +1,95 @@
+package br.com.intelligence;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.zxing.client.android.history.HistoryActivity;
+
+public class IntelligenceMain extends Activity {
+
+	TextView user;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_intelligence);
+		user = (TextView) findViewById(R.id.txtUser);
+
+		String logado;
+
+		Intent intent = getIntent();
+
+		Bundle dados = intent.getExtras();
+
+		logado = dados.getString("login").toString();
+
+		user.setText("Olá, " + logado);
+
+	}
+
+	public void digitalizar(View view) {
+		Intent intent = new Intent(this,
+				br.com.intelligence.TelaDeAtividades.class);
+		startActivity(intent);
+		// finish();
+	}
+
+	public void historicoQr(View view) {
+		Intent passaTela = new Intent(this, HistoryActivity.class);
+		startActivity(passaTela);
+
+	}
+
+	// metodo sair...
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		this.finishActivity(0);
+	}
+
+	// criando menu de opções
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+
+		super.onCreateOptionsMenu(menu);
+		
+		MenuItem menu_sobre = menu.add(0, 0, 0, R.string.menu_intelligence_sobre);
+		menu_sobre.setTitle(R.string.menu_intelligence_sobre);
+		menu_sobre.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+		
+		MenuItem menu_sair = menu.add(0, 1, 1, R.string.menu_intelligence_sair);
+		menu_sobre.setTitle(R.string.menu_intelligence_sair);
+		menu_sair.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+		
+
+		return true;
+	}
+
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		// TODO Auto-generated method stub
+
+		switch (item.getItemId()) {
+		case 0:
+//			mandar pra tela de sobre o app
+			break;
+
+		case 1:
+//			sair da apicação, fechar session do user que está logado
+			
+			break;
+		}
+		
+		return super.onMenuItemSelected(featureId, item);
+	}
+}

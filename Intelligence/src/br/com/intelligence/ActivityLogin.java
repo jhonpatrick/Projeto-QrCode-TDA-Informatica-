@@ -48,6 +48,9 @@ public class ActivityLogin extends Activity {
 		super.onCreate(savedInstanceState);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login);
+		login = (EditText) findViewById(R.id.editTextLogin);
+		senha = (EditText) findViewById(R.id.editTextSenha);
+		
 		senha = (EditText) findViewById(R.id.editTextSenha);
 		cbxMostarSeha = (CheckBox) findViewById(R.id.chbxMostrarSenha);
 
@@ -70,6 +73,38 @@ public class ActivityLogin extends Activity {
 	}
 
 	public void logar(View view) {
+		// validando os campos
+		String user = login.getText().toString();
+		String password = senha.getText().toString();
+		
+		if (user.equals("Teste")) {
+			// se login estiver certo executa codigo abaixo
+			if (password.equals("teste")) {
+				// se login e senha estiverem certas. cria uma nova intent
+				Bundle passaDados = new Bundle();
+				Intent intent = new Intent(getBaseContext(),
+						IntelligenceMain.class);
+				passaDados.putString("login", user);
+				intent.putExtras(passaDados);
+				startActivity(intent);
+				// se tudo estiver certo mostrar msg
+				Toast.makeText(this, "Login com sucesso!", Toast.LENGTH_LONG)
+				.show();
+				// finalizando a intent
+				finish();
+			} else {
+				// se senha estiver errada, a tetativa decrementa e mostrar msg
+				senha.setError("Senha inválida!");
+				senha.requestFocus();
+			}
+
+		} else {
+			login.setError("Login inválido!");
+			login.requestFocus();
+		}
+	}
+
+	public void logar2(View view) {
 		// recebendo o texto dos componetes
 
 		boolean conexao = verificaConexao();
@@ -88,7 +123,7 @@ public class ActivityLogin extends Activity {
 			}.start();
 
 		}
-		
+
 	}
 
 	// metodo sair...
@@ -96,8 +131,8 @@ public class ActivityLogin extends Activity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
-		Toast.makeText(this, "Você saiu do Intelligence.", Toast.LENGTH_LONG)
-				.show();
+		Toast.makeText(this, "Você saiu do Intelligence",
+				Toast.LENGTH_LONG).show();
 		this.finishActivity(0);
 	}
 
@@ -122,7 +157,8 @@ public class ActivityLogin extends Activity {
 						if (resp.equals("valido")) {
 
 							Bundle passaDados = new Bundle();
-							Intent intent = new Intent(getBaseContext(), Intelligence.class);
+							Intent intent = new Intent(getBaseContext(),
+									IntelligenceMain.class);
 							passaDados.putString("login", login);
 							intent.putExtras(passaDados);
 							startActivity(intent);

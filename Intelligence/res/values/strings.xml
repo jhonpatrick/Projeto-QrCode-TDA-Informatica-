@@ -57,6 +57,10 @@
     <string name="enviar">Enviar Todos</string>
     <string name="apagar">Apagar</string>
     <string name="nao_implementado">Função não implementada.</string>
+    
+    <!-- menu de opções da tela principal do intelligence -->
+    <string name="menu_intelligence_sobre">Sobre</string>
+    <string name="menu_intelligence_sair">Sair</string>
 
     <!-- string name="app_name">Barcode Scanner</string -->
     <string name="app_picker_name">Applications</string>
