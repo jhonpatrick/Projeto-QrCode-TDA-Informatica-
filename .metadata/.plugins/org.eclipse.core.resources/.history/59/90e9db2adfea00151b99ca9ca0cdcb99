@@ -2,7 +2,6 @@ package br.com.intelligence;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -13,7 +12,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,6 +42,8 @@ public class ActivityLogin extends Activity {
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login);
 		login = (EditText) findViewById(R.id.editTextLogin);
+		senha = (EditText) findViewById(R.id.editTextSenha);
+
 		senha = (EditText) findViewById(R.id.editTextSenha);
 		cbxMostarSeha = (CheckBox) findViewById(R.id.chbxMostrarSenha);
 
@@ -150,8 +150,6 @@ public class ActivityLogin extends Activity {
 
 						JSONObject respostJson = new JSONObject(resp);
 						boolean aut = respostJson.getBoolean("login");
-						JSONArray eventos =  respostJson.getJSONArray("eventos");
-						JSONArray atividades =  respostJson.getJSONArray("atividades");
 
 						if (aut) {
 
@@ -160,12 +158,10 @@ public class ActivityLogin extends Activity {
 									IntelligenceMain.class);
 							passaDados.putString("login", login);
 							intent.putExtras(passaDados);
-							Toast.makeText(getApplicationContext(), eventos.toString(), Toast.LENGTH_LONG).show();
-							Toast.makeText(getApplicationContext(), atividades.toString(), Toast.LENGTH_LONG).show();
 							startActivity(intent);
 							// finish();
 
-						} else {
+						} else{
 
 							Toast.makeText(getBaseContext(), "Login inválido!",
 									Toast.LENGTH_SHORT).show();

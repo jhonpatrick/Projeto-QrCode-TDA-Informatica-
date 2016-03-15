@@ -52,9 +52,7 @@ public class IntelligenceMain extends Activity {
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		super.onBackPressed();
-		this.finishActivity(0);
-		
+		// desabilitando o bobão de voltar
 	}
 
 	// criando menu de opções

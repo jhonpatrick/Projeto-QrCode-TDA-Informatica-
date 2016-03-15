@@ -150,8 +150,7 @@ public class ActivityLogin extends Activity {
 
 						JSONObject respostJson = new JSONObject(resp);
 						boolean aut = respostJson.getBoolean("login");
-						JSONArray eventos =  respostJson.getJSONArray("eventos");
-						JSONArray atividades =  respostJson.getJSONArray("atividades");
+						JSONArray eventos =  respostJson.getJSONArray("eventos"); 
 
 						if (aut) {
 
@@ -161,7 +160,6 @@ public class ActivityLogin extends Activity {
 							passaDados.putString("login", login);
 							intent.putExtras(passaDados);
 							Toast.makeText(getApplicationContext(), eventos.toString(), Toast.LENGTH_LONG).show();
-							Toast.makeText(getApplicationContext(), atividades.toString(), Toast.LENGTH_LONG).show();
 							startActivity(intent);
 							// finish();
 
