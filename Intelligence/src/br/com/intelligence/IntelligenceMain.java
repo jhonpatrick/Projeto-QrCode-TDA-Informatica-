@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import com.google.zxing.client.android.history.HistoryActivity;
 public class IntelligenceMain extends Activity {
 
 	TextView user;
+	public static final String  PREF_NAME = "PreferenciasLogin";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,21 +25,30 @@ public class IntelligenceMain extends Activity {
 		setContentView(R.layout.activity_intelligence);
 		user = (TextView) findViewById(R.id.txtUser);
 
-		String logado;
+		SharedPreferences perfLogin = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+		String logado = perfLogin.getString("Login", "");
+//		Intent intent = getIntent();
 
-		Intent intent = getIntent();
+//		final Bundle dados = intent.getExtras();
 
-		Bundle dados = intent.getExtras();
-
-		logado = dados.getString("login").toString();
+//		logado = dados.getString("login").toString();
+		
+		//pegando o ArrayList de eventos
+		//dados.getStringArrayList("eventos").toString();
+		//pegando o ArrayList de atividades 
+//		dados.getStringArrayList("atividades").toString();
 
 		user.setText("Olá, " + logado);
+		
+//		Toast.makeText(this, dados.getStringArrayList("eventos").toString(), Toast.LENGTH_LONG).show();
+//		Toast.makeText(this, dados.getStringArrayList("atividades").toString(), Toast.LENGTH_LONG).show();
 
 	}
 
 	public void digitalizar(View view) {
 		Intent intent = new Intent(this,
 				br.com.intelligence.TelaDeAtividades.class);
+		
 		startActivity(intent);
 		// finish();
 	}
@@ -52,8 +63,7 @@ public class IntelligenceMain extends Activity {
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		super.onBackPressed();
-		this.finishActivity(0);
+		this.onPause();
 		
 	}
 
@@ -103,7 +113,7 @@ public class IntelligenceMain extends Activity {
 			public void onClick(DialogInterface dialog, int arg1) {
 				// TODO Auto-generated method stub
 				msgSair();
-				finish();
+				
 			}
 		});
 		// se clicar em não
@@ -122,7 +132,14 @@ public class IntelligenceMain extends Activity {
 	}
 	
 	public void msgSair(){
+		
+		//saindo do aplicativo e apagando os dados do SharedPreferences/ PreferenciasLogin
+		SharedPreferences prefLogin = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefLogin.edit();
+		editor.clear().commit();
+		
 		Toast.makeText(this, "Você saiu do Intelligence",
 				Toast.LENGTH_LONG).show();
+		finish();
 	}
 }

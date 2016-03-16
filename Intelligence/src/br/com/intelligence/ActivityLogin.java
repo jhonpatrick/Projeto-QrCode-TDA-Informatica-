@@ -2,7 +2,6 @@ package br.com.intelligence;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -20,8 +19,8 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.ParseException;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -38,13 +37,20 @@ public class ActivityLogin extends Activity {
 	// qnt de tentativas
 	CheckBox cbxMostarSeha;
 
+	//criando o SharedPreferences do adm
+	public static final String  PREF_NAME = "PreferenciasLogin"; 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login);
+		
 		login = (EditText) findViewById(R.id.editTextLogin);
 		senha = (EditText) findViewById(R.id.editTextSenha);
+		
+		
+		
 		cbxMostarSeha = (CheckBox) findViewById(R.id.chbxMostrarSenha);
 
 		// metodo mostrar senha
@@ -148,22 +154,64 @@ public class ActivityLogin extends Activity {
 
 					try {
 
+						//recebendo dados do JSON
 						JSONObject respostJson = new JSONObject(resp);
 						boolean aut = respostJson.getBoolean("login");
 						JSONArray eventos =  respostJson.getJSONArray("eventos");
 						JSONArray atividades =  respostJson.getJSONArray("atividades");
-
+						
+						//verificando se login é válido = true
 						if (aut) {
 
 							Bundle passaDados = new Bundle();
 							Intent intent = new Intent(getBaseContext(),
 									IntelligenceMain.class);
-							passaDados.putString("login", login);
-							intent.putExtras(passaDados);
-							Toast.makeText(getApplicationContext(), eventos.toString(), Toast.LENGTH_LONG).show();
-							Toast.makeText(getApplicationContext(), atividades.toString(), Toast.LENGTH_LONG).show();
+
+							ArrayList<String> listEventos = new ArrayList<String>();
+							
+							//percorrendo lista de eventos e mostrando a mesma 
+//							for (int i = 0; i < eventos.length(); i++) {
+//								
+//								listEventos.add(eventos.get(i).toString());
+//								
+//							}
+//							passaDados.putStringArrayList("eventos", listEventos);
+//							
+							ArrayList<String> listAtividade = new ArrayList<String>();
+//							
+//							//percorrendo lista de atividades e mostrando a mesma 
+//							for (int i = 0; i < atividades.length(); i++) {
+//								
+//								listAtividade.add(atividades.get(i).toString());
+//								
+//							}
+//							passaDados.putStringArrayList("atividades", listAtividade);
+							
+//							passaDados.putString("login", login);
+							
+							//criando SharedPreferences para adm que estiver logado , salvando dados da session. 
+							SharedPreferences preferenciasUser = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+							SharedPreferences.Editor editor = preferenciasUser.edit();
+							//salvando dados 
+							editor.putString("Login", login);
+							editor.putString("Senha", senha);
+							
+							//percorrendo lista de eventos e mostrando a mesma
+							for (int i = 0; i < eventos.length(); i++) {
+								listEventos.add(eventos.get(i).toString());
+								editor.putString("Eventos", listEventos.toString());
+							}
+							
+							//percorrendo lista de atividades e mostrando a mesma 
+							for (int i = 0; i < atividades.length(); i++) {
+								
+								listAtividade.add(atividades.get(i).toString());
+								editor.putString("Atividades", listAtividade.toString());
+								
+							}
+							editor.commit();
+//							intent.putExtras(passaDados);
 							startActivity(intent);
-							// finish();
 
 						} else {
 

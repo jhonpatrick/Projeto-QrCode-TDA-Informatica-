@@ -1,8 +1,8 @@
 package br.com.intelligence;
 
-import br.com.intelligence.R;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,11 +13,17 @@ public class TelaDeAtividades extends Activity {
 	private String dados_recolhidos;
 	public static final int REQUEST_CODE = 0;
 	Intent intent;
-
+	public static final String  PREF_NAME = "PreferenciasLogin";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tela_de_atividades);
+		
+		SharedPreferences perfLogin = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+		Toast.makeText(getBaseContext(), perfLogin.getString("Eventos", " Eventos não foi salvo "), Toast.LENGTH_LONG).show();
+		Toast.makeText(getBaseContext(), perfLogin.getString("Atividades", " Atividades não foi salva "), Toast.LENGTH_LONG).show();
+		
 	}
 
 	// tratando o botão iniciar
@@ -45,14 +51,9 @@ public class TelaDeAtividades extends Activity {
 			
 		}
 		
-
-//		dados_recolhidos = "Resultado do SCANER: "
-//				+ data.getStringExtra("SCAN_RESULT") + "( "
-//				+ data.getStringExtra("SCAN_FORMAT") + ")";
 	}
 
 	// saindo
-
 	public void onBackPressed() {
 		super.onBackPressed();
 		this.finishActivity(0);
