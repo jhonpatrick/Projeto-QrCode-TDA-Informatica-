@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.google.zxing.client.android.history.HistoryActivity;
 
-public class IntelligenceMain extends Activity {
+public class IntelligenceMain extends Activity{
 
 	TextView user;
 	public static final String  PREF_NAME = "PreferenciasLogin";
@@ -23,26 +23,15 @@ public class IntelligenceMain extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intelligence);
+		
+		//pegando user direto do PreferencesLogin/ Session salva
 		user = (TextView) findViewById(R.id.txtUser);
 
 		SharedPreferences perfLogin = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 		String logado = perfLogin.getString("Login", "");
-//		Intent intent = getIntent();
 
-//		final Bundle dados = intent.getExtras();
-
-//		logado = dados.getString("login").toString();
-		
-		//pegando o ArrayList de eventos
-		//dados.getStringArrayList("eventos").toString();
-		//pegando o ArrayList de atividades 
-//		dados.getStringArrayList("atividades").toString();
-
-		user.setText("OlÃ¡, " + logado);
-		
-//		Toast.makeText(this, dados.getStringArrayList("eventos").toString(), Toast.LENGTH_LONG).show();
-//		Toast.makeText(this, dados.getStringArrayList("atividades").toString(), Toast.LENGTH_LONG).show();
-
+		//mostrando o adm logado
+		user.setText("Olá, " + logado);
 	}
 
 	public void digitalizar(View view) {
@@ -50,7 +39,6 @@ public class IntelligenceMain extends Activity {
 				br.com.intelligence.TelaDeAtividades.class);
 		
 		startActivity(intent);
-		// finish();
 	}
 
 	public void historicoQr(View view) {
@@ -63,11 +51,11 @@ public class IntelligenceMain extends Activity {
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		this.onPause();
+		super.onBackPressed();
 		
 	}
 
-	// criando menu de opÃ§Ãµes
+	// criando menu de opções
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,7 +79,7 @@ public class IntelligenceMain extends Activity {
 			break;
 
 		case R.id.menu_intelligence_sair:
-//			sair da apicaÃ§Ã£o, fechar session do user que estÃ¡ logado
+//			sair da apicação, fechar session do user que está logado
 			msgAlerta();
 			break;
 		}
@@ -100,15 +88,15 @@ public class IntelligenceMain extends Activity {
 	}
 	
 	private void msgAlerta() {
-		// criando uma caixa de confirmaÃ§Ã£o usando AlertDialog
+		// criando uma caixa de confirmação usando AlertDialog
 		AlertDialog.Builder alerta = new AlertDialog.Builder(this);
 		// definindo o titulo
-		alerta.setTitle("AtenÃ§Ã£o!");
+		alerta.setTitle("Atenção!");
 		// difinindo a msg
 		alerta.setMessage("Deseja realmente sair?");
 		// se clicar em Sim
 		alerta.setPositiveButton("Sair", new DialogInterface.OnClickListener() {
-			// metodo verifica condiÃ§Ã£o sai da aplicaÃ§Ã£o
+			// metodo verifica condição sai da aplicação
 			@Override
 			public void onClick(DialogInterface dialog, int arg1) {
 				// TODO Auto-generated method stub
@@ -116,9 +104,9 @@ public class IntelligenceMain extends Activity {
 				
 			}
 		});
-		// se clicar em nÃ£o
+		// se clicar em não
 		alerta.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-			// metodo verifica condiÃ§Ã£o e volta para a aplicaÃƒÂ§ÃƒÂ£o
+			// metodo verifica condição e volta para a aplicaÃ§Ã£o
 			@Override
 			public void onClick(DialogInterface dialog, int arg1) {
 				// TODO Auto-generated method stub
@@ -138,7 +126,7 @@ public class IntelligenceMain extends Activity {
 		SharedPreferences.Editor editor = prefLogin.edit();
 		editor.clear().commit();
 		
-		Toast.makeText(this, "VocÃª saiu do Intelligence",
+		Toast.makeText(this, "Você saiu do Intelligence",
 				Toast.LENGTH_LONG).show();
 		finish();
 	}

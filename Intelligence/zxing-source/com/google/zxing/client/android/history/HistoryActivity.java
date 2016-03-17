@@ -97,9 +97,9 @@ public final class HistoryActivity extends ListActivity {
 
 		if (position >= adapter.getCount()
 				|| adapter.getItem(position).getResult() != null) {
-			menu.add(Menu.NONE, position, position,
+			menu.add(0, position, position,
 					R.string.history_clear_one_history_text);
-			menu.add(Menu.NONE, position, position, R.string.history_enviar_um);
+			menu.add(1, position, position, R.string.history_enviar_um);
 		}
 	} // else it's just that dummy "Empty" message
 
@@ -178,6 +178,8 @@ public final class HistoryActivity extends ListActivity {
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int i2) {
+							
+							//chamar metodo de eviar
 							historyManager.clearHistory();
 							dialog.dismiss();
 							finish();
@@ -187,6 +189,8 @@ public final class HistoryActivity extends ListActivity {
 					.show();
 			builder1.setNegativeButton(R.string.button_cancel, null);
 			builder1.show();
+			//mostrando historico;
+			Toast.makeText(getBaseContext(), historyManager.toString(), Toast.LENGTH_LONG).show();
 
 			/*
 			 * CharSequence history = historyManager.buildHistory(); Parcelable

@@ -12,7 +12,7 @@
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
- limitations under the License.
+ limitations under the License.
 -->
 <resources>
 
@@ -20,11 +20,12 @@
 
 
     <!-- tela de login -->
+    <string name="app_name">Intelligence</string>
     <string name="bem_vindo">Seja Bem-vindo ao Intelligence!</string>
     <string name="info1">Antes de iniciar, informe o Evento</string>
     <string name="info2">e a Atividade.</string>
     <string name="img_eventos">img_eventos</string>
-    <string name="img_atividade">img_atividade</string>   
+    <string name="img_atividade">img_atividade</string>
     <string name="iniciar">Iniciar</string>
     <string name="login">Login: </string>
     <string name="dica_login">Digite seu email</string>
@@ -38,7 +39,6 @@
     <string name="manter_conectado">Manter-me conectado</string>
 
     <!-- tela de scanner -->
-    <string name="app_name">Intelligence</string>
     <string name="sem_label"></string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -57,7 +57,7 @@
     <string name="enviar">Enviar Todos</string>
     <string name="apagar">Apagar</string>
     <string name="nao_implementado">Função não implementada.</string>
-    
+
     <!-- menu de opções da tela principal do intelligence -->
     <string name="menu_intelligence_sobre">Sobre</string>
     <string name="menu_intelligence_sair">Sair</string>
@@ -182,8 +182,6 @@
     <string name="wifi_changing_network">Requesting connection to network\u2026</string>
     <string name="wifi_ssid_label">Network Name</string>
     <string name="wifi_type_label">Type</string>
-    <string name="title_activity_teste">Teste IMEI</string>
-    <string name="title_activity_activity_login">Login</string>
-    <string name="title_activity_tela_de_atividades">TelaDeAtividades</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>

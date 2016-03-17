@@ -21,12 +21,12 @@ public class TelaDeAtividades extends Activity {
 		setContentView(R.layout.activity_tela_de_atividades);
 		
 		SharedPreferences perfLogin = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-		Toast.makeText(getBaseContext(), perfLogin.getString("Eventos", " Eventos n√£o foi salvo "), Toast.LENGTH_LONG).show();
-		Toast.makeText(getBaseContext(), perfLogin.getString("Atividades", " Atividades n√£o foi salva "), Toast.LENGTH_LONG).show();
+		Toast.makeText(getBaseContext(), perfLogin.getString("Eventos", " Eventos n„o foi salvo "), Toast.LENGTH_LONG).show();
+		Toast.makeText(getBaseContext(), perfLogin.getString("Atividades", " Atividades n„o foi salva "), Toast.LENGTH_LONG).show();
 		
 	}
 
-	// tratando o bot√£o iniciar
+	// tratando o bot„o iniciar
 	public void iniciar(View view) {
 		intent = new Intent(this,
 				com.google.zxing.client.android.CaptureActivity.class);

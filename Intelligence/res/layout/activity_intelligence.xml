@@ -12,8 +12,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/rld_intelli_2"
         android:layout_marginTop="18dp"
-        android:textSize="15sp"
-        android:text="@string/ola_usuario" />
+        android:text="@string/ola_usuario"
+        android:textColor="#8B8682"
+        android:textSize="15sp" />
 
     <RelativeLayout
         android:id="@+id/rld_intelli_2"
@@ -46,10 +47,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="20dp"
-            android:textSize="15sp"
             android:layout_centerHorizontal="true"
-            android:text="@string/bem_vindo" />
+            android:layout_marginTop="20dp"
+            android:text="@string/bem_vindo"
+            android:textColor="#8B8682"
+            android:textSize="15sp" />
 
         <ImageButton
             android:id="@+id/imgb_historico"

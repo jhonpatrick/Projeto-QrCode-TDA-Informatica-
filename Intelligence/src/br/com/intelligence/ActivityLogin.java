@@ -94,12 +94,12 @@ public class ActivityLogin extends Activity {
 				finish();
 			} else {
 				// se senha estiver errada, a tetativa decrementa e mostrar msg
-				senha.setError("Senha inv√°lida!");
+				senha.setError("Senha inv·lida!");
 				senha.requestFocus();
 			}
 
 		} else {
-			login.setError("Login inv√°lido!");
+			login.setError("Login inv·lido!");
 			login.requestFocus();
 		}
 	}
@@ -128,7 +128,7 @@ public class ActivityLogin extends Activity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
-		Toast.makeText(this, "Voc√™ saiu do Intelligence", Toast.LENGTH_LONG)
+		Toast.makeText(this, "VocÍ saiu do Intelligence", Toast.LENGTH_LONG)
 				.show();
 		this.finishActivity(0);
 	}
@@ -160,7 +160,7 @@ public class ActivityLogin extends Activity {
 						JSONArray eventos =  respostJson.getJSONArray("eventos");
 						JSONArray atividades =  respostJson.getJSONArray("atividades");
 						
-						//verificando se login √© v√°lido = true
+						//verificando se login È v·lido = true
 						if (aut) {
 
 							Bundle passaDados = new Bundle();
@@ -215,7 +215,7 @@ public class ActivityLogin extends Activity {
 
 						} else {
 
-							Toast.makeText(getBaseContext(), "Login inv√°lido!",
+							Toast.makeText(getBaseContext(), "Login inv·lido!",
 									Toast.LENGTH_SHORT).show();
 
 						}
@@ -231,7 +231,7 @@ public class ActivityLogin extends Activity {
 		}
 	}
 
-	// m√©todo para vericar conex√£o com intenet
+	// mÈtodo para vericar conex„o com intenet
 	public boolean verificaConexao() {
 		boolean conectado = false;
 		ConnectivityManager conectivtyManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -243,7 +243,7 @@ public class ActivityLogin extends Activity {
 			conectado = false;
 			Toast.makeText(
 					this,
-					"Voc√™ n√£o est√° conectado em nunhuma rede! Verifique sua conex√£o com a internet",
+					"VocÍ n„o est· conectado em nunhuma rede! Verifique sua conex„o com a internet",
 					Toast.LENGTH_LONG).show();
 		}
 		return conectado;
