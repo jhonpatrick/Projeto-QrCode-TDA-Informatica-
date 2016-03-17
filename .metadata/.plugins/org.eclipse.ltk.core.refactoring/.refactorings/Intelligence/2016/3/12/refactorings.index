@@ -2,3 +2,7 @@
 1457961719306	Delete element
 1457961743820	Delete element
 1457964145986	Delete element
+1458215901473	Delete element
+1458220749027	Rename local variable 'perfLogin'
+1458234417531	Extract method 'isLogin'
+1458235760355	Rename local variable 'passaDados'

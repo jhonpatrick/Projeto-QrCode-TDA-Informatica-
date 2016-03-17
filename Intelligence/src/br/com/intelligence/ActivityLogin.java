@@ -154,71 +154,7 @@ public class ActivityLogin extends Activity {
 
 					try {
 
-						//recebendo dados do JSON
-						JSONObject respostJson = new JSONObject(resp);
-						boolean aut = respostJson.getBoolean("login");
-						JSONArray eventos =  respostJson.getJSONArray("eventos");
-						JSONArray atividades =  respostJson.getJSONArray("atividades");
-						
-						//verificando se login é válido = true
-						if (aut) {
-
-							Bundle passaDados = new Bundle();
-							Intent intent = new Intent(getBaseContext(),
-									IntelligenceMain.class);
-
-							ArrayList<String> listEventos = new ArrayList<String>();
-							
-							//percorrendo lista de eventos e mostrando a mesma 
-//							for (int i = 0; i < eventos.length(); i++) {
-//								
-//								listEventos.add(eventos.get(i).toString());
-//								
-//							}
-//							passaDados.putStringArrayList("eventos", listEventos);
-//							
-							ArrayList<String> listAtividade = new ArrayList<String>();
-//							
-//							//percorrendo lista de atividades e mostrando a mesma 
-//							for (int i = 0; i < atividades.length(); i++) {
-//								
-//								listAtividade.add(atividades.get(i).toString());
-//								
-//							}
-//							passaDados.putStringArrayList("atividades", listAtividade);
-							
-//							passaDados.putString("login", login);
-							
-							//criando SharedPreferences para adm que estiver logado , salvando dados da session. 
-							SharedPreferences preferenciasUser = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-							SharedPreferences.Editor editor = preferenciasUser.edit();
-							//salvando dados 
-							editor.putString("Login", login);
-							editor.putString("Senha", senha);
-							
-							//percorrendo lista de eventos e mostrando a mesma
-							for (int i = 0; i < eventos.length(); i++) {
-								listEventos.add(eventos.get(i).toString());
-								editor.putString("Eventos", listEventos.toString());
-							}
-							
-							//percorrendo lista de atividades e mostrando a mesma 
-							for (int i = 0; i < atividades.length(); i++) {
-								
-								listAtividade.add(atividades.get(i).toString());
-								editor.putString("Atividades", listAtividade.toString());
-								
-							}
-							editor.commit();
-//							intent.putExtras(passaDados);
-							startActivity(intent);
-
-						} else {
-
-							Toast.makeText(getBaseContext(), "Login inválido!",
-									Toast.LENGTH_SHORT).show();
-
-						}
+						isLogin(login, senha, resp);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -248,5 +184,49 @@ public class ActivityLogin extends Activity {
 		}
 		return conectado;
 
+	}
+
+	public void isLogin(final String login, final String senha,
+			final String resp) throws JSONException {
+		//recebendo dados do JSON
+		JSONObject respostJson = new JSONObject(resp);
+		boolean aut = respostJson.getBoolean("login");
+		JSONArray eventos =  respostJson.getJSONArray("eventos");
+		JSONArray atividades =  respostJson.getJSONArray("atividades");
+		
+		//verificando se login é válido = true
+		if (aut) {
+
+			Bundle passaEventos = new Bundle();
+			
+			Intent intent = new Intent(this, IntelligenceMain.class);
+			
+			//percorrendo lista de eventos e mostrando a mesma 
+//			for (int i = 0; i < eventos.length(); i++) {
+//				JSONObject j = new JSONObject();
+//				j = (JSONObject) eventos.get(i);
+//				passaEventos.putString("eventos", j.getString("nome"));	
+//			}
+			passaEventos.putString("eventos", eventos.toString());
+			
+			//criando SharedPreferences para adm que estiver logado , salvando dados da session. 
+			SharedPreferences preferenciasUser = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+			SharedPreferences.Editor editor = preferenciasUser.edit();
+			//salvando dados 
+			editor.putBoolean("Status Login", aut);
+			editor.putString("Login", login);
+			editor.putString("Senha", senha);
+			
+			editor.commit();
+			intent.putExtras(passaEventos);
+
+			startActivity(intent);
+
+		} else {
+
+			Toast.makeText(getBaseContext(), "Login inválido!",
+					Toast.LENGTH_SHORT).show();
+
+		}
 	}
 }

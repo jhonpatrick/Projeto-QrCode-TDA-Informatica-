@@ -4,13 +4,13 @@
 
     <item android:id="@+id/menu_intelligence_sobre"
         android:title="@string/menu_intelligence_sobre"
-        android:showAsAction="never"
+        android:showAsAction="collapseActionView"
         android:orderInCategory="0"
         />
     
     <item android:id="@+id/menu_intelligence_sair"
         android:title="@string/menu_intelligence_sair"
-        android:showAsAction="never"
+        android:showAsAction="collapseActionView"
         android:orderInCategory="1"
         />
 
