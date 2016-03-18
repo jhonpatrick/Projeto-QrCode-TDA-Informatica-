@@ -3,6 +3,8 @@ package br.com.intelligence;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import model.Eventos;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -29,6 +31,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
+import banco.CriaBanco;
+import dao.EventosDAO;
 
 @SuppressWarnings("deprecation")
 public class ActivityLogin extends Activity {
@@ -37,20 +41,35 @@ public class ActivityLogin extends Activity {
 	// qnt de tentativas
 	CheckBox cbxMostarSeha;
 
-	//criando o SharedPreferences do adm
-	public static final String  PREF_NAME = "PreferenciasLogin"; 
-	
+	// criando o SharedPreferences do adm
+	public static final String PREF_NAME = "PreferenciasLogin";
+	EventosDAO eventosDAO;
+	CriaBanco criaBanco;
+	Eventos modelEventos;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login);
-		
+
+		eventosDAO = new EventosDAO(getBaseContext());
+
 		login = (EditText) findViewById(R.id.editTextLogin);
 		senha = (EditText) findViewById(R.id.editTextSenha);
-		
-		
-		
+
+		// verificando se existe session salva do login
+		SharedPreferences preferenciasUser = getSharedPreferences(PREF_NAME,
+				MODE_PRIVATE);
+
+		String lo = preferenciasUser.getString("Login", "");
+		login.setText(lo);
+		String se = preferenciasUser.getString("Senha", "");
+		senha.setText(se);
+
+		if (!lo.isEmpty() && !se.isEmpty()) {
+			startActivity(new Intent(this, IntelligenceMain.class));
+			finish();
+		}
 		cbxMostarSeha = (CheckBox) findViewById(R.id.chbxMostrarSenha);
 
 		// metodo mostrar senha
@@ -60,7 +79,6 @@ public class ActivityLogin extends Activity {
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
 				// TODO Auto-generated method stub
-				// Object o = new PasswordTransformationMethod();
 				if (!isChecked) {
 					senha.setTransformationMethod(new PasswordTransformationMethod());
 
@@ -109,18 +127,17 @@ public class ActivityLogin extends Activity {
 
 		boolean conexao = verificaConexao();
 		if (conexao == true) {
-
+			// criando um nova linha de execução do dispositivo
 			new Thread() {
 				public void run() {
-					// se tudo estiver certo, manda os dados pro servidor
+
+					// se tudo estiver certo, manda um postHttp
 					postHttp(login.getText().toString(), senha.getText()
 							.toString());
-
 				}
 			}.start();
 
 		}
-
 	}
 
 	// metodo sair...
@@ -128,8 +145,8 @@ public class ActivityLogin extends Activity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
-		Toast.makeText(this, "Você saiu do Intelligence", Toast.LENGTH_LONG)
-				.show();
+		Toast.makeText(getBaseContext(), "Você saiu do Intelligence",
+				Toast.LENGTH_LONG).show();
 		this.finishActivity(0);
 	}
 
@@ -151,10 +168,76 @@ public class ActivityLogin extends Activity {
 
 			runOnUiThread(new Runnable() {
 				public void run() {
-
 					try {
+						// recebendo dados do JSON
+						JSONObject respostJson = new JSONObject(resp);
+						boolean aut = respostJson.getBoolean("login");
+						JSONArray eventos = respostJson.getJSONArray("eventos");
+						JSONArray atividades = respostJson
+								.getJSONArray("atividades");
 
-						isLogin(login, senha, resp);
+						// verificando se login é válido = true
+						if (aut) {
+							Bundle passaDados = new Bundle();
+							Intent intent = new Intent(getBaseContext(),
+									IntelligenceMain.class);
+
+							// percorrendo lista de eventos e mostrando a mesma
+							for (int i = 0; i < eventos.length(); i++) {
+
+								JSONObject jsonObject = (JSONObject) eventos
+										.get(i);
+
+								Toast.makeText(
+										getBaseContext(),
+										"Id-Evento: "
+												+ jsonObject.getString("id")
+												+ ", Nome-Evento: "
+												+ jsonObject.getString("nome"),
+										Toast.LENGTH_LONG).show();
+
+								// add no dados do json no sqlite aqui
+								long id = Long.parseLong(jsonObject
+										.getString("id"));
+								String nome = jsonObject.getString("nome");
+								modelEventos = new Eventos();
+								modelEventos.set_id(id);
+								modelEventos.setNome(nome);
+								eventosDAO.inserir(modelEventos);
+								// TODO: handle exception
+							}
+							Toast.makeText(
+									getBaseContext(),
+									"DEU CERTO -- "
+											+ eventosDAO.carregaDados()
+													.toString(),
+									Toast.LENGTH_LONG).show();
+
+							// criando SharedPreferences para adm que estiver
+							// logado , salvando
+							// dados da session.
+							SharedPreferences preferenciasUser = getSharedPreferences(
+									PREF_NAME, MODE_PRIVATE);
+							SharedPreferences.Editor editor = preferenciasUser
+									.edit();
+
+							// salvando dados
+							editor.putBoolean("Status Login", aut);
+							editor.putString("Login", login);
+							editor.putString("Senha", senha);
+
+							// percorrendo lista de eventos e mostrando a mesma
+
+							editor.commit();
+							// intent.putExtras(passaDados);
+							startActivity(intent);
+
+						} else {
+
+							Toast.makeText(getBaseContext(), "Login inválido!",
+									Toast.LENGTH_SHORT).show();
+
+						}
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -178,55 +261,10 @@ public class ActivityLogin extends Activity {
 		} else {
 			conectado = false;
 			Toast.makeText(
-					this,
+					getBaseContext(),
 					"Você não está conectado em nunhuma rede! Verifique sua conexão com a internet",
 					Toast.LENGTH_LONG).show();
 		}
 		return conectado;
-
-	}
-
-	public void isLogin(final String login, final String senha,
-			final String resp) throws JSONException {
-		//recebendo dados do JSON
-		JSONObject respostJson = new JSONObject(resp);
-		boolean aut = respostJson.getBoolean("login");
-		JSONArray eventos =  respostJson.getJSONArray("eventos");
-		JSONArray atividades =  respostJson.getJSONArray("atividades");
-		
-		//verificando se login é válido = true
-		if (aut) {
-
-			Bundle passaEventos = new Bundle();
-			
-			Intent intent = new Intent(this, IntelligenceMain.class);
-			
-			//percorrendo lista de eventos e mostrando a mesma 
-//			for (int i = 0; i < eventos.length(); i++) {
-//				JSONObject j = new JSONObject();
-//				j = (JSONObject) eventos.get(i);
-//				passaEventos.putString("eventos", j.getString("nome"));	
-//			}
-			passaEventos.putString("eventos", eventos.toString());
-			
-			//criando SharedPreferences para adm que estiver logado , salvando dados da session. 
-			SharedPreferences preferenciasUser = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-			SharedPreferences.Editor editor = preferenciasUser.edit();
-			//salvando dados 
-			editor.putBoolean("Status Login", aut);
-			editor.putString("Login", login);
-			editor.putString("Senha", senha);
-			
-			editor.commit();
-			intent.putExtras(passaEventos);
-
-			startActivity(intent);
-
-		} else {
-
-			Toast.makeText(getBaseContext(), "Login inválido!",
-					Toast.LENGTH_SHORT).show();
-
-		}
 	}
 }

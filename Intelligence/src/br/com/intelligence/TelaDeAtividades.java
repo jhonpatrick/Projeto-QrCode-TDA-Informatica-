@@ -1,50 +1,35 @@
 package br.com.intelligence;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 public class TelaDeAtividades extends Activity {
 
 	private String dados_recolhidos;
 	public static final int REQUEST_CODE = 0;
-	Intent intentEv = getIntent();
+	Intent intent;
 
-	public Spinner spnEv, spnAtv;
+	Spinner spnEventos, spnAtividades;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tela_de_atividades);
 
-		try {
-			JSONArray ev = new JSONArray(intentEv.getStringExtra("eventos"));
-			Toast.makeText(this, ev.toString(), Toast.LENGTH_LONG).show();
-			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//		ArrayAdapter<String> adapterEventos = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, listEventos);
+		//criando spiner eventos
 		
-//		ArrayList<String> listAtividades = pegaEventos.getStringArrayList("atividades");
-
-		
-
 	}
 
 	// tratando o botão iniciar
 	public void iniciar(View view) {
-		intentEv = new Intent(this,
+		intent = new Intent(this,
 				com.google.zxing.client.android.CaptureActivity.class);
-		startActivityForResult(intentEv, REQUEST_CODE);
+		startActivityForResult(intent, REQUEST_CODE);
 
 	}
 
