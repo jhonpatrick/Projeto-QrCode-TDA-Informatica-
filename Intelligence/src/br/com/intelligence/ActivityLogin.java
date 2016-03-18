@@ -43,9 +43,9 @@ public class ActivityLogin extends Activity {
 
 	// criando o SharedPreferences do adm
 	public static final String PREF_NAME = "PreferenciasLogin";
-	EventosDAO eventosDAO;
-	CriaBanco criaBanco;
-	Eventos modelEventos;
+	private EventosDAO eventosDAO;
+	private CriaBanco criaBanco;
+	private Eventos modelEventos;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -1,5 +1,6 @@
 package br.com.intelligence;
 
+import dao.EventosDAO;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +12,9 @@ public class TelaDeAtividades extends Activity {
 
 	private String dados_recolhidos;
 	public static final int REQUEST_CODE = 0;
-	Intent intent;
-
+	 Intent intent;
 	Spinner spnEventos, spnAtividades;
+	private EventosDAO eventosDAO;
 	
 
 	@Override
@@ -21,7 +22,9 @@ public class TelaDeAtividades extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tela_de_atividades);
 
+		eventosDAO = new EventosDAO(getBaseContext());
 		//criando spiner eventos
+		spnEventos = (Spinner) findViewById(R.id.spn_eventos);
 		
 	}
 
