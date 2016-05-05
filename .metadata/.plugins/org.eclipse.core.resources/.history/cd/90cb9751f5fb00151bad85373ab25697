@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rld_intelli_1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fafafa" >
+
+    <TextView
+        android:id="@+id/txtUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/rld_intelli_2"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/rld_intelli_2"
+        android:layout_marginTop="18dp"
+        android:text="@string/ola_usuario"
+        android:textColor="#8B8682"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/rld_intelli_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp"
+        android:background="#ffffff" >
+
+        <ImageButton
+            android:id="@+id/imgb_digitalizar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="29dp"
+            android:background="#FF8C00"
+            android:contentDescription="@string/app_name"
+            android:onClick="digitalizar"
+            android:src="@drawable/btn1" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/bem_vindo"
+            android:textColor="#8B8682"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/imgb_historico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/imgb_digitalizar"
+            android:layout_below="@+id/imgb_digitalizar"
+            android:layout_marginTop="26dp"
+            android:background="#FF8C00"
+            android:contentDescription="@string/app_name"
+            android:onClick="historicoQr"
+            android:src="@drawable/btn5" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

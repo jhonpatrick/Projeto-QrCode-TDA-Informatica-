@@ -27,9 +27,10 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import br.com.intelligence.R;
+
 import com.google.zxing.Result;
 
-public final class HistoryItemAdapter extends ArrayAdapter<HistoryItem> {
+public final class HistoryItemAdapter extends ArrayAdapter {
 
 	private final Context activity;
 
@@ -50,7 +51,7 @@ public final class HistoryItemAdapter extends ArrayAdapter<HistoryItem> {
 					false);
 		}
 
-		HistoryItem item = getItem(position);
+		HistoryItem item = (HistoryItem) getItem(position);
 		Result result = item.getResult();
 
 		CharSequence title;

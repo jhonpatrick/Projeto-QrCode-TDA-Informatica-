@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item android:state_pressed="true" >
+         <!-- Estilo do corpo -->
+        <shape android:shape="rectangle" >
+            <!--  cor solida (background)-->
+            <solid android:color="@color/dark_orange3"/>
+            <!-- contorno -->
+            <stroke 
+                android:width="9dp" 
+                android:color="@color/dark_orange3"
+                />
+            <!-- hover -->
+            <corners android:topLeftRadius="20dp"/>
+        </shape>
+        <bitmap
+             android:src="@drawable/btn2"
+             />
+    </item>
+
+     <item >
+         <!-- Estilo do corpo -->
+        <shape android:shape="rectangle" >
+            
+            <!--  cor solida (background)-->
+            <solid android:color="@color/orange_app" />
+            
+            <!-- contorno -->
+            <stroke 
+                android:width="3dp"
+                android:color="@color/orange_app"
+                />
+            
+            <!-- hover -->
+            <corners android:topLeftRadius="20dp" />
+		</shape>
+    </item>
+</selector>

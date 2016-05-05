@@ -1,0 +1,148 @@
+package dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import model.Atividades;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import banco.CriaBanco;
+
+public class AtividadesDAO {
+	
+
+	private SQLiteDatabase db = null;
+	private CriaBanco criaBanco = null;
+	private Cursor cursor;
+	private int indexId;
+	private int indexNome;
+
+	public AtividadesDAO(Context context) {
+		criaBanco = new CriaBanco(context);
+	}
+
+	// implementando os metodo de inserir
+	public String inserirAtv(Atividades atv) {
+		ContentValues valores; 
+		long resultado; 
+		db = criaBanco.getWritableDatabase(); 
+		valores = new ContentValues(); 
+		valores.put(criaBanco.ID_ATIVIDADE, atv.get_id()); 
+		valores.put(CriaBanco.NOME_ATIVIDADE, atv.getNome());
+		valores.put(CriaBanco.ID_EVENTO_ATV, atv.getId_evento());
+		resultado = db.insert(criaBanco.TABELA2, null, valores); 
+		db.close(); 
+		if (resultado ==-1) return "Erro ao inserir registro"; 
+		else {
+			return "Registro Inserido com sucesso”"; 
+		}
+
+	}
+
+	public boolean deletar(long id) {
+		String where = criaBanco.ID_ATIVIDADE + " = ?";
+		String _id = String.valueOf(id);
+		String[] whereArgs = new String[] { _id };
+
+		int retorno = this.db.delete(criaBanco.TABELA2, where, whereArgs);
+
+		if (retorno != 0)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean atualiza(Atividades atv) {
+		// TODO Auto-generated method stub
+
+		ContentValues values = new ContentValues();
+		values.put(criaBanco.ID_ATIVIDADE, atv.get_id());
+		values.put(criaBanco.NOME_ATIVIDADE, atv.getNome());
+
+		String where = criaBanco.ID_ATIVIDADE + " = ?";
+		String _id = String.valueOf(atv.get_id());
+		String[] whereArgs = new String[] { _id };
+
+		int retorno = this.db.update(criaBanco.TABELA2, values, where,
+				whereArgs);
+
+		if (retorno != 0)
+			return true;
+		else
+			return false;
+	}
+
+	public Atividades consultar(long id) {
+		// TODO Auto-generated method stub
+		Atividades atv;
+		String[] columns = new String[] { criaBanco.ID_ATIVIDADE,
+				criaBanco.NOME_ATIVIDADE };
+		String _id = String.valueOf(id);
+		String[] args = new String[] { _id };
+		Cursor c = db.query(criaBanco.TABELA2, columns, "nome = ?", args, null,
+				null, "nome");
+
+		c.moveToFirst();
+		atv = new Atividades();
+		atv.set_id(c.getLong(0));
+		atv.setNome(c.getString(1));
+		return atv;
+
+	}
+
+	public void configuraIndex() {
+		this.indexId = this.cursor.getColumnIndex(criaBanco.ID_EVENTO);
+		this.indexNome = this.cursor.getColumnIndex(criaBanco.NOME_EVENTO);
+	}
+
+	public Cursor carregaDados() {
+		Cursor c;
+		String[] campos = { criaBanco.ID_ATIVIDADE, criaBanco.NOME_ATIVIDADE};
+		db = criaBanco.getReadableDatabase();
+		c = db.query(criaBanco.TABELA2, campos, null, null, null, null, null,
+				null);
+		if (c != null) {
+			c.moveToFirst();
+		}
+		db.close();
+		return cursor;
+	}
+
+	public Atividades listarPorId(String id) {
+		Atividades atv = null;
+
+		this.cursor = this.db.rawQuery("SELECT * FROM " + criaBanco.TABELA2
+				+ "WHERE _id = '%d'", null);
+		configuraIndex();
+
+		if (this.cursor.moveToFirst()) {
+			atv = new Atividades(this.cursor.getLong(this.indexId),
+					this.cursor.getString(this.indexNome));
+		}
+
+		return atv;
+	}
+
+	public void deletarTabelaAtividades(Atividades atv) {
+		db = criaBanco.getReadableDatabase();
+		db.delete(criaBanco.TABELA2, null, null);
+	}
+
+	public List<String> listarNomesAtividades() {
+		List<String> s = new ArrayList<String>();
+		db = criaBanco.getWritableDatabase();
+		Cursor c = db.rawQuery("SELECT " + criaBanco.NOME_ATIVIDADE + " FROM "
+				+ criaBanco.TABELA2, null);
+		if (c != null) {
+			c.moveToFirst();
+			do {
+				s.add(c.getString(c.getColumnIndex(criaBanco.NOME_ATIVIDADE)));
+			} while (c.moveToNext());
+		}
+		c.close();
+		return s;
+	}
+
+}

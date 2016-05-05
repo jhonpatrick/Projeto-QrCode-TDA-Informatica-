@@ -1,0 +1,25 @@
+package dao;
+
+import android.os.AsyncTask;
+
+public class Conexao extends AsyncTask<String, String, String>{
+
+	@Override
+	protected void onPreExecute() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	protected String doInBackground(String... params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	protected void onPostExecute(Void params) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

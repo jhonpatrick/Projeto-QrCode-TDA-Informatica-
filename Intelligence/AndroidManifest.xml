@@ -22,14 +22,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/icone"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:screenOrientation="portrait"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".ActivityLogin"
             android:noHistory="true"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensor"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,21 +50,24 @@
         </activity>
         <activity
             android:name=".IntelligenceMain"
-            android:icon="@drawable/logo_hor_branca1"
+            android:icon="@drawable/ho1"
+            android:theme="@style/AppTheme"
             android:label="@string/sem_label"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="sensor" >
         </activity>
         <activity
             android:name="com.google.zxing.client.android.history.HistoryActivity"
-            android:icon="@drawable/icone_branco"
+            android:icon="@drawable/lg3"
             android:label="@string/title_activity_historico"
-            android:screenOrientation="portrait" >
+            android:theme="@style/AppTheme"
+            android:screenOrientation="sensor" >
         </activity>
         <activity
             android:name=".TelaDeAtividades"
-            android:icon="@drawable/logo_hor_branca1"
+            android:icon="@drawable/ho1"
+            android:theme="@style/AppTheme"
             android:label="@string/sem_label"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="sensor" >
         </activity>
     </application>
 

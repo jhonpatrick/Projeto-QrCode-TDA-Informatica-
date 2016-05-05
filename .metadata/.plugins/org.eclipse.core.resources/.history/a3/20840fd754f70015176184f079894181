@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        android:background="#222222"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:background="#222222"
+            android:contentDescription="@string/inteligence"
+            android:src="@drawable/ver1" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editTextLogin"
+        android:layout_width="234dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextSenha"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_marginTop="22dp"
+        android:drawableLeft="@drawable/user4"
+        android:ems="10"
+        android:hint="@string/dica_login"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/editTextSenha"
+        android:layout_width="234dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:drawableLeft="@drawable/key4"
+        android:ems="10"
+        android:hint="@string/dica_senha"
+        android:inputType="textPassword" >
+    </EditText>
+
+    <CheckBox
+        android:id="@+id/chbxMostrarSenha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextSenha"
+        android:layout_below="@+id/editTextSenha"
+        android:text="@string/Mostrar_senha"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/buttonLogar"
+        style="@style/ShareButton"
+        android:layout_width="258dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chbxMostrarSenha"
+        android:layout_alignRight="@+id/editTextSenha"
+        android:layout_below="@+id/chbxMostrarSenha"
+        android:layout_marginTop="14dp"
+        android:background="#ff7c2a"
+        android:onClick="logar"
+        android:text="@string/logar"
+        android:textSize="16sp" />
+
+    <FrameLayout
+        android:id="@+id/frameLtLogin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:background="@color/silver" >
+
+        <ProgressBar
+            android:id="@+id/progBLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+</RelativeLayout>

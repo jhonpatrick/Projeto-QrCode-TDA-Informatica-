@@ -26,4 +26,18 @@
   <color name="transparent">#00000000</color>
   <color name="viewfinder_laser">#ffcc0000</color> <!-- Android standard ICS color -->
   <color name="viewfinder_mask">#60000000</color>
+  <color name="silver">#c0c0c0</color>
+  <color name="red">#ff0000</color>
+  <color name="black">#000000</color>
+  <color name="white">#ffffff</color>
+  <color name="blue">#0000ff</color>
+  <color name="gray">#808080</color>
+  <color name="gray_bold">#222222</color>
+  <color name="orange_app">#e28942</color>
+  <color name="orange_strong">#ff7c2a</color>
+  <color name="orange_weak">#ff8c00</color>
+  <color name="orange_red3">#CD3700</color>
+  <color name="dark_orange3">#CD6600</color>
+  <color name="seashell4">#8B8682</color>
+  <color name="bnt_snp">#fafafa</color>
 </resources>

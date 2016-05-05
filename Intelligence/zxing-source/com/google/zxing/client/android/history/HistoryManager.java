@@ -16,33 +16,37 @@
 
 package com.google.zxing.client.android.history;
 
-import android.database.sqlite.SQLiteException;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.Result;
-import com.google.zxing.client.android.Intents;
-import com.google.zxing.client.android.PreferencesActivity;
-import com.google.zxing.client.android.result.ResultHandler;
-
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.net.Uri;
-import android.os.Environment;
-import android.preference.PreferenceManager;
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import org.json.JSONArray;
+
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
+import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.util.Log;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.Result;
+import com.google.zxing.client.android.Intents;
+import com.google.zxing.client.android.PreferencesActivity;
+import com.google.zxing.client.android.result.ResultHandler;
 
 /**
  * <p>
@@ -59,16 +63,11 @@ public final class HistoryManager {
 
 	private static final String[] COLUMNS = { DBHelper.TEXT_COL,
 			DBHelper.DISPLAY_COL, DBHelper.FORMAT_COL, DBHelper.TIMESTAMP_COL,
-	// DBHelper.DETAILS_COL,
 	};
 
 	private static final String[] COUNT_COLUMN = { "COUNT(1)" };
 
 	private static final String[] ID_COL_PROJECTION = { DBHelper.ID_COL };
-	// private static final String[] ID_DETAIL_COL_PROJECTION = {
-	// DBHelper.ID_COL, DBHelper.DETAILS_COL };
-	// private static final String[] ID_DETAIL_COL_PROJECTION = {
-	// DBHelper.ID_COL};
 	private static final DateFormat EXPORT_DATE_TIME_FORMAT = DateFormat
 			.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 
@@ -150,7 +149,7 @@ public final class HistoryManager {
 			db = helper.getWritableDatabase();
 			cursor = db.query(DBHelper.TABLE_NAME, ID_COL_PROJECTION, null,
 					null, null, null, DBHelper.TIMESTAMP_COL + " DESC");
-			cursor.move(number + 1);
+			cursor.move(number);
 			db.delete(DBHelper.TABLE_NAME,
 					DBHelper.ID_COL + '=' + cursor.getString(0), null);
 		} finally {
@@ -193,39 +192,12 @@ public final class HistoryManager {
 		}
 	}
 
-	// public void addHistoryItemDetails(String itemID, String itemDetails) {
-	/*
-	 * public void addHistoryItemDetails(String itemID) { // As we're going to
-	 * do an update only we don't need need to worry // about the preferences;
-	 * if the item wasn't saved it won't be udpated SQLiteOpenHelper helper =
-	 * new DBHelper(activity); SQLiteDatabase db = null; Cursor cursor = null;
-	 * try { db = helper.getWritableDatabase(); cursor =
-	 * db.query(DBHelper.TABLE_NAME, ID_DETAIL_COL_PROJECTION, DBHelper.TEXT_COL
-	 * + "=?", new String[] { itemID }, null, DBHelper.TIMESTAMP_COL + " DESC",
-	 * "1"); String oldID = null; String oldDetails = null; if
-	 * (cursor.moveToNext()) { oldID = cursor.getString(0); oldDetails =
-	 * cursor.getString(1); }
-	 * 
-	 * if (oldID != null) { String newDetails; if (oldDetails == null) {
-	 * newDetails = itemDetails; } else if (oldDetails.contains(itemDetails)) {
-	 * newDetails = null; } else { newDetails = oldDetails + " : " +
-	 * itemDetails; } if (newDetails != null) { ContentValues values = new
-	 * ContentValues(); //values.put(DBHelper.DETAILS_COL, newDetails);
-	 * db.update(DBHelper.TABLE_NAME, values, DBHelper.ID_COL + "=?", new
-	 * String[] { oldID }); } }
-	 */
-
-	// } finally {
-	// close(cursor, db);
-	// }
-	// }
-
-	private void deletePrevious(String text) {
+	public void deletePrevious(String text) {
 		SQLiteOpenHelper helper = new DBHelper(activity);
 		SQLiteDatabase db = null;
 		try {
 			db = helper.getWritableDatabase();
-			db.delete(DBHelper.TABLE_NAME, DBHelper.TEXT_COL + "=?",
+			db.delete(DBHelper.TABLE_NAME, DBHelper.TEXT_COL + "= ?",
 					new String[] { text });
 		} finally {
 			close(null, db);
@@ -374,4 +346,79 @@ public final class HistoryManager {
 		}
 	}
 
+	public JSONArray listarTodosQr() {
+		JSONArray listQr = new JSONArray();
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
+		db = helper.getWritableDatabase();
+		Cursor c = db.rawQuery("SELECT " + DBHelper.TEXT_COL + ", " + DBHelper.TIMESTAMP_COL +  " FROM "
+				+ DBHelper.TABLE_NAME, null);
+		if (c != null) {
+			c.moveToFirst();
+			do {
+				String string = c.getString(c.getColumnIndex(DBHelper.TIMESTAMP_COL));
+				Date d = new Date(Long.parseLong(string));
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss", Locale.US);
+				listQr.put(c.getString(c.getColumnIndex(DBHelper.TEXT_COL))); 
+				listQr.put(sdf.format(d));
+			} while (c.moveToNext());
+		}
+		c.close();
+		return listQr;
+	}
+	
+	public JSONArray listarUmQr(String dado){
+		JSONArray listQr = new JSONArray();
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		db = helper.getWritableDatabase();
+		c = db.rawQuery("SELECT " + DBHelper.TEXT_COL + ", " + DBHelper.TIMESTAMP_COL +  " FROM "
+				+ DBHelper.TABLE_NAME + " WHERE " + DBHelper.TEXT_COL + " = '" + dado + "';", null);
+		if(c != null ){
+			c.moveToFirst();
+			String string = c.getString(c.getColumnIndex(DBHelper.TIMESTAMP_COL));
+			Date d = new Date(Long.parseLong(string));
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss", Locale.US);
+			listQr.put(c.getString(c.getColumnIndex(DBHelper.TEXT_COL))); 
+			listQr.put(sdf.format(d));
+			c.close();	
+		}
+		return listQr;
+	}
+	
+	public boolean buscarDado(String dado){
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		db = helper.getWritableDatabase();
+		c = db.rawQuery("SELECT " + DBHelper.ID_INSCRITOS + " FROM " + DBHelper.INSCRITOS + 
+				" WHERE " + DBHelper.ID_INSCRITOS + " = '" + dado + "'", null);
+		if(c != null && c.getCount() > 0){
+			c.moveToFirst();
+			Log.i("Script: ", "Busca encontrada! " + dado);
+			c.close();
+			return true;
+		}else{
+			Log.i("Script: ", "Busca não encontrada! " + dado);
+			c.close();
+			return false;
+		}
+	}
+	
+	public boolean historyIsVazio(){
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		db = helper.getWritableDatabase();
+		c = db.rawQuery("SELECT count(" + DBHelper.ID_COL + ") FROM " + DBHelper.TABLE_NAME, null);
+		if(c != null && 
+				c.moveToFirst() && 
+				c.getInt(0) > 0){
+			Log.i("Script: ", "Contem dados no histórico!");
+			return true;
+		}
+		Log.i("Script: ", "Não contem nunhum dado no histórico!");
+		return false;
+	}
 }

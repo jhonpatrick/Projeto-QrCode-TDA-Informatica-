@@ -23,16 +23,20 @@ public final class HistoryItem {
 	private final Result result;
 	private final String display;
 
-	// private final String details;
-	// HistoryItem(Result result, String display, String details) {
 	HistoryItem(Result result, String display) {
 		this.result = result;
 		this.display = display;
-		// this.details = details;
 	}
 
 	public Result getResult() {
 		return result;
+	}
+	public String getDisplay(){
+		StringBuilder displayResult = new StringBuilder();
+		if(display != null || display.isEmpty()){
+			displayResult.append(display);
+		}
+		return display;
 	}
 
 	public String getDisplayAndDetails() {
@@ -42,9 +46,6 @@ public final class HistoryItem {
 		} else {
 			displayResult.append(display);
 		}
-		// if (details != null && !details.isEmpty()) {
-		// displayResult.append(" : ").append(details);
-		// }
 		return displayResult.toString();
 	}
 

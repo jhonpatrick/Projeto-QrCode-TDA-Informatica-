@@ -1,11 +1,11 @@
-INDEX VERSION 1.126+C:\Users\MarcosJr\Desktop\nãoApagar\Projeto-QrCode-TDA-Informatica-\.metadata\.plugins\org.eclipse.jdt.core
-678966108.index
+INDEX VERSION 1.126+C:\Users\Patrick Rodrigues\Desktop\novoProjAndroid\Projeto-QrCode-TDA-Informatica-\.metadata\.plugins\org.eclipse.jdt.core
 625012690.index
-3838646498.index
-2161076774.index
-316895724.index
 1816411803.index
-4075258795.index
+3253251293.index
+678966108.index
+316895724.index
 112855251.index
-4211829582.index
-3546289798.index
+2587668403.index
+3988536220.index
+176829576.index
+2520514104.index

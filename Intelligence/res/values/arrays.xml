@@ -44,4 +44,12 @@
     <item>@string/preferences_front_light_auto</item>
     <item>@string/preferences_front_light_off</item>
   </string-array>
+  
+  <string-array name="array_eventos">
+      <item >1</item>
+      <item >2</item>
+      <item >3</item>
+      <item >4</item>
+      <item >5</item>
+  </string-array>
 </resources>

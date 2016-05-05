@@ -1,52 +1,53 @@
 package dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import model.Eventos;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import banco.CriaBanco;
+
+import com.google.zxing.client.android.history.DBHelper;
 
 public class EventosDAO {
 
 	private SQLiteDatabase db = null;
-	private CriaBanco criaBanco = null;
+	private DBHelper helper = null;
 	private Cursor cursor;
 	private int indexId;
 	private int indexNome;
 
 	public EventosDAO(Context context) {
-		criaBanco = new CriaBanco(context);
+		helper = new DBHelper(context);
 	}
 
 	// implementando os metodo de inserir
+	public String inserirEv(Eventos eventos) {
 
-	public String inserir(Eventos eventos){ 
 		ContentValues valores; 
 		long resultado; 
-		db = criaBanco.getWritableDatabase(); 
+		db = helper.getWritableDatabase(); 
 		valores = new ContentValues(); 
-		valores.put(criaBanco.ID_EVENTO, eventos.get_id()); 
-		valores.put(CriaBanco.NOME_EVENTO, eventos.getNome()); 
-		resultado = db.insert(criaBanco.TABELA1, null, valores); 
+		valores.put(helper.ID_EVENTO, eventos.get_id()); 
+		valores.put(helper.NOME_EVENTO, eventos.getNome()); 
+		resultado = db.insert(helper.EVENTOS, null, valores); 
 		db.close(); 
 		if (resultado ==-1) return "Erro ao inserir registro"; 
 		else {
 			return "Registro Inserido com sucesso”"; 
 		}
+
 	}
 
 	public boolean deletar(long id) {
 
-		Eventos eventos = new Eventos();
-		String where = criaBanco.ID_EVENTO + " = ?";
-		String _id = String.valueOf(eventos.get_id());
+		String where = helper.ID_EVENTO + " = ?";
+		String _id = String.valueOf(id);
 		String[] whereArgs = new String[] { _id };
 
-		int retorno = this.db.delete(criaBanco.TABELA1, where, whereArgs);
+		int retorno = this.db.delete(helper.EVENTOS, where, whereArgs);
 
 		if (retorno != 0)
 			return true;
@@ -58,14 +59,14 @@ public class EventosDAO {
 		// TODO Auto-generated method stub
 
 		ContentValues values = new ContentValues();
-		values.put(criaBanco.ID_EVENTO, eventos.get_id());
-		values.put(criaBanco.NOME_EVENTO, eventos.getNome());
+		values.put(helper.ID_EVENTO, eventos.get_id());
+		values.put(helper.NOME_EVENTO, eventos.getNome());
 
-		String where = criaBanco.ID_EVENTO + " = ?";
+		String where = helper.ID_EVENTO + " = ?";
 		String _id = String.valueOf(eventos.get_id());
 		String[] whereArgs = new String[] { _id };
 
-		int retorno = this.db.update(criaBanco.TABELA1, values, where,
+		int retorno = this.db.update(helper.EVENTOS, values, where,
 				whereArgs);
 
 		if (retorno != 0)
@@ -77,12 +78,12 @@ public class EventosDAO {
 	public Eventos consultar(long id) {
 		// TODO Auto-generated method stub
 		Eventos evento;
-		String[] columns = new String[] { criaBanco.ID_EVENTO,
-				criaBanco.NOME_EVENTO };
+		String[] columns = new String[] { helper.ID_EVENTO,
+				helper.NOME_EVENTO };
 		String _id = String.valueOf(id);
 		String[] args = new String[] { _id };
-		Cursor c = db.query(criaBanco.TABELA1, columns, "nome = ?", args, null,
-				null, "nome");
+		Cursor c = db.query(helper.EVENTOS, columns, helper.NOME_EVENTO + " = ?", args, null,
+				null, helper.NOME_EVENTO);
 
 		c.moveToFirst();
 		evento = new Eventos();
@@ -93,60 +94,28 @@ public class EventosDAO {
 	}
 
 	public void configuraIndex() {
-		this.indexId = this.cursor.getColumnIndex(criaBanco.ID_EVENTO);
-		this.indexNome = this.cursor.getColumnIndex(criaBanco.NOME_EVENTO);
+		this.indexId = this.cursor.getColumnIndex(helper.ID_EVENTO);
+		this.indexNome = this.cursor.getColumnIndex(helper.NOME_EVENTO);
 	}
 
-//	public ArrayList<Eventos> listarTodosEventos() {
-//		ArrayList<Eventos> listEventos = new ArrayList<Eventos>();
-//		Eventos eventos;
-//
-//		this.cursor = this.db.rawQuery("SELECT * FROM " + criaBanco.TABELA1,
-//				null);
-//		configuraIndex();
-//
-//		while (this.cursor.moveToNext()) {
-//			eventos = new Eventos(this.cursor.getLong(this.indexId),
-//					this.cursor.getString(this.indexNome));
-//			listEventos.add(eventos);
-//		}
-//		return listEventos;
-//	}
-	
-	public Cursor carregaDados(){ 
-		Cursor cursor; String[] campos = {criaBanco.ID_EVENTO, criaBanco.NOME_EVENTO}; 
-		db = criaBanco.getReadableDatabase(); 
-		cursor = db.query(criaBanco.TABELA1, campos, null, null, null, null, null, null); 
-		if(cursor != null){ 
-			cursor.moveToFirst(); 
-		} 
-		db.close(); 
-		return cursor; 
-	}
-
-	//	private static final String SQL_SELECT_ALL = "SELECT * FROM pessoa ORDER BY nome";
-//	private static final String SQL_SELECT_NOME = "SELECT * FROM pessoa WHERE nome = '%s'";
-	
-	public ArrayList<Eventos> listarPorNome(String nome) {
-		ArrayList<Eventos> listEventos = new ArrayList<Eventos>();
-		Eventos eventos;
-
-		this.cursor = this.db.rawQuery("SELECT * FROM " + criaBanco.NOME_EVENTO + "WHERE nome = '%s'",
+	public Cursor carregaDados() {
+		Cursor c;
+		String[] campos = { helper.ID_EVENTO, helper.NOME_EVENTO };
+		db = helper.getReadableDatabase();
+		c = db.query(helper.EVENTOS, campos, null, null, null, null, null,
 				null);
-		configuraIndex();
-
-		while (this.cursor.moveToNext()) {
-			eventos = new Eventos(this.cursor.getLong(this.indexId),
-					this.cursor.getString(this.indexNome));
-			listEventos.add(eventos);
+		if (c != null) {
+			c.moveToFirst();
 		}
-		return listEventos;
+		db.close();
+		return cursor;
 	}
 
 	public Eventos listarPorId(String id) {
 		Eventos eventos = null;
 
-		this.cursor = this.db.rawQuery("SELECT * FROM " + criaBanco.ID_EVENTO + "WHERE _id = '%d'", null);
+		this.cursor = this.db.rawQuery("SELECT * FROM " + helper.EVENTOS
+				+ "WHERE _id = '%d'", null);
 		configuraIndex();
 
 		if (this.cursor.moveToFirst()) {
@@ -156,8 +125,27 @@ public class EventosDAO {
 
 		return eventos;
 	}
-	
-	public void deletarTabelaEventos(){ 
-		db.delete(criaBanco.TABELA1, null, null);
+
+	public void deletarTabelaEventos() {
+		db = helper.getWritableDatabase();
+		String sql = "DROP TABLE IF EXISTS" + helper.EVENTOS;
+		db.execSQL(sql);
 	}
+
+	public List<String> listarNomesEventos() {
+		List<String> s = new ArrayList<String>();
+		db = helper.getWritableDatabase();
+		Cursor c = db.rawQuery("SELECT " + helper.NOME_EVENTO + " FROM "
+				+ helper.EVENTOS, null);
+		if (c != null) {
+			c.moveToFirst();
+			do {
+				s.add(c.getString(c.getColumnIndex(helper.NOME_EVENTO)));
+			} while (c.moveToNext());
+		}
+		c.close();
+		return s;
+	}
+	
+	
 }

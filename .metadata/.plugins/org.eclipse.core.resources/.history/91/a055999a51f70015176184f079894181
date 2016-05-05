@@ -1,0 +1,258 @@
+package br.com.intelligence;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import model.Atividades;
+import model.Eventos;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+import dao.AtividadesDAO;
+import dao.EventosDAO;
+
+@SuppressWarnings("deprecation")
+public class ActivityLogin extends Activity {
+
+	EditText login, senha;
+	// qnt de tentativas
+	CheckBox cbxMostarSeha;
+
+	// criando o SharedPreferences do adm
+	public static final String PREF_NAME = "PreferenciasLogin";
+	private EventosDAO eventosDAO;
+	private Eventos modelEventos;
+	private Atividades modelAtividades;
+	private AtividadesDAO atvDAO;
+	private FrameLayout fl;
+	private ProgressBar progBar;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
+
+		eventosDAO = new EventosDAO(getBaseContext());
+		atvDAO = new AtividadesDAO(getApplicationContext());
+
+		login = (EditText) findViewById(R.id.editTextLogin);
+		senha = (EditText) findViewById(R.id.editTextSenha);
+
+		fl = (FrameLayout) findViewById(R.id.frameLtLogin);
+		progBar = (ProgressBar) findViewById(R.id.progBLogin);
+		// verificando se existe session salva do login
+		SharedPreferences preferenciasUser = getSharedPreferences(PREF_NAME,
+				MODE_PRIVATE);
+
+		String lo = preferenciasUser.getString("Login", "");
+		login.setText(lo);
+		String se = preferenciasUser.getString("Senha", "");
+		senha.setText(se);
+
+		if (!lo.isEmpty() && !se.isEmpty()) {
+			startActivity(new Intent(this, IntelligenceMain.class));
+			finish();
+		}
+		cbxMostarSeha = (CheckBox) findViewById(R.id.chbxMostrarSenha);
+
+		// metodo mostrar senha
+		cbxMostarSeha.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				// TODO Auto-generated method stub
+				if (!isChecked) {
+					senha.setTransformationMethod(new PasswordTransformationMethod());
+
+				} else {
+					senha.setTransformationMethod(null);
+				}
+			}
+		});
+	}
+
+	public void logar(View view) {
+		// recebendo o texto dos componetes
+
+		final String l = login.getText().toString();
+		final String s = senha.getText().toString();
+
+		boolean conexao = verificaConexao();
+		if (conexao == true) {
+			if (!l.equals(null)) {
+				if (!s.equals(null)) {
+					// criando um nova linha de execução do dispositivo
+					new Thread() {
+						public void run() {
+							// se tudo estiver certo, manda um postHttp
+							postHttp(l, s);
+						}
+					}.start();
+				} else {
+					senha.setError("Senha inváida");
+				}
+			} else {
+				login.setError("Login inváido");
+
+			}
+		}
+	}
+
+	// metodo sair...
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		Toast.makeText(getBaseContext(), "Você saiu do Intelligence",
+				Toast.LENGTH_LONG).show();
+		this.finishActivity(0);
+	}
+
+	public void postHttp(final String login, final String senha) {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(
+				"http://www.inscrevaseonline.com.br/enucomp/testes/qrcode.php");
+
+		try {
+			ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
+			valores.add(new BasicNameValuePair("login", login));
+			valores.add(new BasicNameValuePair("senha", senha));
+
+			httpPost.setEntity(new UrlEncodedFormEntity(valores));
+
+			final HttpResponse resposta = httpClient.execute(httpPost);
+			final String resp = EntityUtils.toString(resposta.getEntity());
+
+			// minhar var
+
+			runOnUiThread(new Runnable() {
+				public void run() {
+
+					try {
+						// recebendo dados do JSON
+						JSONObject respostJson = new JSONObject(resp);
+						boolean aut = respostJson.getBoolean("login");
+
+						// verificando se login é válido = true
+						if (aut) {
+							Intent intent = new Intent(getBaseContext(),
+									IntelligenceMain.class);
+
+							JSONArray eventos = respostJson
+									.getJSONArray("eventos");
+							JSONArray atividades = respostJson
+									.getJSONArray("atividades");
+
+							// percorrendo lista de eventos e mostrando a mesma
+							for (int i = 0; i < eventos.length(); i++) {
+
+								JSONObject jsonObject = (JSONObject) eventos
+										.get(i);
+
+								// add no dados do json no sqlite aqui
+								long id = Long.parseLong(jsonObject
+										.getString("id"));
+								String nomeEv = jsonObject.getString("nome");
+								modelEventos = new Eventos();
+								modelEventos.set_id(id);
+								modelEventos.setNome(nomeEv);
+								eventosDAO.inserirEv(modelEventos);
+							}
+
+							for (int j = 0; j < atividades.length(); j++) {
+
+								JSONObject jsonObject = (JSONObject) atividades
+										.get(j);
+								long id = Long.parseLong(jsonObject
+										.getString("id"));
+								String nomeAtv = jsonObject.getString("nome");
+								modelAtividades = new Atividades();
+								modelAtividades.set_id(id);
+								modelAtividades.setNome(nomeAtv);
+								atvDAO.inserirAtv(modelAtividades);
+
+							}
+
+							/*
+							 * criando SharedPreferences para adm que estiver
+							 * logado , salvando dados da session.
+							 */
+
+							SharedPreferences preferenciasUser = getSharedPreferences(
+									PREF_NAME, MODE_PRIVATE);
+							SharedPreferences.Editor editor = preferenciasUser
+									.edit();
+
+							// salvando dados
+							editor.putBoolean("Status Login", aut);
+							editor.putString("Login", login);
+							editor.putString("Senha", senha);
+
+							// percorrendo lista de eventos e mostrando a mesma
+
+							editor.commit();
+							startActivity(intent);
+
+						} else {
+
+							Toast.makeText(getBaseContext(), "Login inválido!",
+									Toast.LENGTH_SHORT).show();
+
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+		} catch (ClientProtocolException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// método para vericar conexão com intenet
+	public boolean verificaConexao() {
+		boolean conectado = false;
+		ConnectivityManager conectivtyManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (conectivtyManager.getActiveNetworkInfo() != null
+				&& conectivtyManager.getActiveNetworkInfo().isAvailable()
+				&& conectivtyManager.getActiveNetworkInfo().isConnected()) {
+			conectado = true;
+		} else {
+			conectado = false;
+			Toast.makeText(
+					getBaseContext(),
+					"Você não está conectado em nunhuma rede! Verifique sua conexão com a internet",
+					Toast.LENGTH_LONG).show();
+		}
+		return conectado;
+	}
+}

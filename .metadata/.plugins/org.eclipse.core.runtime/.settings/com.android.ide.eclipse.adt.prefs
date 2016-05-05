@@ -1,8 +1,7 @@
 com.android.ide.eclipse.adt.autoPickTarget=false
 com.android.ide.eclipse.adt.fixLegacyEditors=1
 com.android.ide.eclipse.adt.previews=screens
-com.android.ide.eclipse.adt.sdk=C\:\\Users\\MarcosJr\\Documents\\1\\adt-bundle-windows-x86_64-20140702\\sdk
-com.android.ide.eclipse.adt.xmlEditor=true
-design.palette.flyout.width=163
-design.structure.flyout.width=243
+com.android.ide.eclipse.adt.sdk=F\:\\Documents\\PROGRAMAS PC\\1\\adt-bundle-windows-x86_64-20140702\\sdk
+design.palette.flyout.width=224
+design.structure.flyout.width=248
 eclipse.preferences.version=1

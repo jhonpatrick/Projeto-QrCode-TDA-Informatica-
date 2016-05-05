@@ -4,16 +4,24 @@ public class Atividades {
 
 	private long _id;
 	private String nome;
+	private long id_evento;
 	
 	public Atividades() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Atividades(long _id, String nome) {
+	public Atividades(long _id, String nome, long id_evento) {
 		super();
 		this._id = _id;
 		this.nome = nome;
+		this.id_evento = id_evento;
+	}
+
+	public Atividades(String nome, long id_evento) {
+		super();
+		this.nome = nome;
+		this.id_evento = id_evento;
 	}
 
 	public Atividades(String nome) {
@@ -35,6 +43,14 @@ public class Atividades {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public long getId_evento() {
+		return id_evento;
+	}
+
+	public void setId_evento(long id_evento) {
+		this.id_evento = id_evento;
 	}
 
 	@Override
@@ -61,6 +77,7 @@ public class Atividades {
 
 	@Override
 	public String toString() {
-		return "Atividades [_id=" + _id + ", nome=" + nome + "]";
+		return "Atividades [_id=" + _id + ", nome=" + nome + ", id_evento="
+				+ id_evento + "]";
 	}
 }

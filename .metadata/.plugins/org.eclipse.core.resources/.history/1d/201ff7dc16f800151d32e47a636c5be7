@@ -1,0 +1,74 @@
+package dao;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+
+public class Conexao extends AsyncTask<String, String, Intent>{
+
+	private ProgressDialog proDialog;
+	private Context context;
+	
+	public Conexao(Context context) {
+		this.context = context;
+	}
+
+	@Override
+	protected void onPreExecute() {
+		proDialog = new ProgressDialog(context);
+		proDialog.setMessage("Logando...");
+		proDialog.show();
+		
+	}
+	
+	@Override
+	protected Intent doInBackground(String... params) {
+		return null;
+
+		/*try {
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpPost httpPost = new HttpPost(
+					"http://www.inscrevaseonline.com.br/enucomp/testes/qrcode.php");
+			ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
+			valores.add(new BasicNameValuePair("login", login));
+			valores.add(new BasicNameValuePair("senha", senha));
+
+			httpPost.setEntity(new UrlEncodedFormEntity(valores));
+
+			final HttpResponse resposta = httpClient.execute(httpPost);
+			final String resp = EntityUtils.toString(resposta.getEntity());
+		
+		}catch(IOException ex){
+			ex.printStackTrace();
+		}*/
+
+	}
+	
+	@Override
+	protected void onProgressUpdate(String... params) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	protected void onPostExecute(Intent	 params) {
+		
+		proDialog.setMessage("Logado com sucesso!");
+		proDialog.dismiss();
+		
+	}
+	
+}

@@ -35,9 +35,9 @@ import br.com.intelligence.R;
 final class BeepManager implements MediaPlayer.OnCompletionListener,
 		MediaPlayer.OnErrorListener {
 
-	private static final String TAG = BeepManager.class.getSimpleName();
+	private static final String TAG = BeepManagerQrNaoEncontrado.class.getSimpleName();
 
-	private static final float BEEP_VOLUME = 0.10f;
+	private static final float BEEP_VOLUME = 0.20f;
 	private static final long VIBRATE_DURATION = 200L;
 
 	private final Activity activity;
@@ -96,6 +96,7 @@ final class BeepManager implements MediaPlayer.OnCompletionListener,
 		mediaPlayer.setOnCompletionListener(this);
 		mediaPlayer.setOnErrorListener(this);
 
+//alterar som 
 		AssetFileDescriptor file = activity.getResources().openRawResourceFd(
 				R.raw.beep);
 		try {
