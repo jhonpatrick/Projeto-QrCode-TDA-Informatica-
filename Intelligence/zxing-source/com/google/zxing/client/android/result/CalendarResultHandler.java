@@ -19,11 +19,11 @@ package com.google.zxing.client.android.result;
 import java.text.DateFormat;
 import java.util.Date;
 
+import br.com.intelligence.R;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.util.Log;
-import br.com.intelligence.R;
 
 import com.google.zxing.client.result.CalendarParsedResult;
 import com.google.zxing.client.result.ParsedResult;

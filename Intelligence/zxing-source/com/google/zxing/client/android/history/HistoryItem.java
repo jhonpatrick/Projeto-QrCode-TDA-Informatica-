@@ -16,24 +16,74 @@
 
 package com.google.zxing.client.android.history;
 
+import java.sql.Timestamp;
+
 import com.google.zxing.Result;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+@DatabaseTable(tableName="historico")
+public  class HistoryItem {
 
-public final class HistoryItem {
+	@DatabaseField(id=true)
+	private long id;
+	@DatabaseField(columnName="qrcode")
+	private Result result;
+	@DatabaseField
+	private String display;
+	@DatabaseField
+	private String format;
+	@DatabaseField
+	private Timestamp timestamp;
 
-	private final Result result;
-	private final String display;
+	public HistoryItem() {
+//		deixe um contrutor vazio
+	}
 
-	HistoryItem(Result result, String display) {
+	public HistoryItem(long id, Result result, String display, String format,
+			Timestamp timestamp) {
+		this.id = id;
 		this.result = result;
 		this.display = display;
+		this.format = format;
+		this.timestamp = timestamp;
+	}
+
+	public HistoryItem(Result result, String display) {
+		this.result = result;
+		this.display = display;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
+	}
+
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	public Result getResult() {
 		return result;
 	}
-	public String getDisplay(){
+
+	public String getDisplay() {
 		StringBuilder displayResult = new StringBuilder();
-		if(display != null || display.isEmpty()){
+		if (display != null || display.isEmpty()) {
 			displayResult.append(display);
 		}
 		return display;
@@ -49,4 +99,32 @@ public final class HistoryItem {
 		return displayResult.toString();
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HistoryItem other = (HistoryItem) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "HistoryItem [id=" + id + ", result=" + result + ", display="
+				+ display + ", format=" + format + ", timestamp=" + timestamp
+				+ "]";
+	}
 }

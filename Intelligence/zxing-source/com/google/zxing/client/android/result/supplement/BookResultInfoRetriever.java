@@ -25,9 +25,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import br.com.intelligence.R;
 import android.content.Context;
 import android.widget.TextView;
-import br.com.intelligence.R;
 
 import com.google.zxing.client.android.HttpHelper;
 import com.google.zxing.client.android.LocaleManager;

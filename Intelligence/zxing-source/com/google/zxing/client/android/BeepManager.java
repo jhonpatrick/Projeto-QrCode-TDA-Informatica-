@@ -18,6 +18,7 @@ package com.google.zxing.client.android;
 
 import java.io.IOException;
 
+import br.com.intelligence.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,7 +28,6 @@ import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import br.com.intelligence.R;
 
 /**
  * Manages beeps and vibrations for {@link CaptureActivity}.
@@ -35,7 +35,8 @@ import br.com.intelligence.R;
 final class BeepManager implements MediaPlayer.OnCompletionListener,
 		MediaPlayer.OnErrorListener {
 
-	private static final String TAG = BeepManagerQrNaoEncontrado.class.getSimpleName();
+	private static final String TAG = BeepManagerQrNaoEncontrado.class
+			.getSimpleName();
 
 	private static final float BEEP_VOLUME = 0.20f;
 	private static final long VIBRATE_DURATION = 200L;
@@ -96,7 +97,7 @@ final class BeepManager implements MediaPlayer.OnCompletionListener,
 		mediaPlayer.setOnCompletionListener(this);
 		mediaPlayer.setOnErrorListener(this);
 
-//alterar som 
+		// alterar som
 		AssetFileDescriptor file = activity.getResources().openRawResourceFd(
 				R.raw.beep);
 		try {

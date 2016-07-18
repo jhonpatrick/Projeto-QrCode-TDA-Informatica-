@@ -19,12 +19,12 @@ package com.google.zxing.client.android;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import br.com.intelligence.R;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
-import br.com.intelligence.R;
 
 public final class PreferencesFragment extends PreferenceFragment implements
 		SharedPreferences.OnSharedPreferenceChangeListener {

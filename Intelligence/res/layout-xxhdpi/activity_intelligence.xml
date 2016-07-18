@@ -8,10 +8,9 @@
         android:id="@+id/txtUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/rld_intelli_2"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/rld_intelli_2"
         android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
         android:text="@string/ola_usuario"
         android:textColor="@color/seashell4"
         android:textSize="40sp" />
@@ -35,18 +34,19 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:text="@string/bem_vindo"
             android:textColor="@color/seashell4"
             android:textSize="40sp" />
 
-        <ImageButton
+		<ImageButton
             android:id="@+id/imgb_historico"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/imgb_digitalizar"
             android:layout_below="@+id/imgb_digitalizar"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="15dp"
             android:contentDescription="@string/app_name"
             android:onClick="historicoQr"
             android:background="@drawable/selector_tela_intelligence"
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView1"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="10dp"
             android:contentDescription="@string/app_name"
             android:onClick="digitalizar"
             android:background="@drawable/selector_tela_intelligence"

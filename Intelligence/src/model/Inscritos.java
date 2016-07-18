@@ -1,23 +1,26 @@
 package model;
 
+import java.util.List;
+
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName="inscritos")
 public class Inscritos {
 	
+	@DatabaseField(id=true)
 	private long id_inscritos;
-	private long id_atividades;
+	@ForeignCollectionField(foreignFieldName="listAtividade")
+	private List<Atividades> listAtividade;
 
 	public Inscritos() {
-		super();
+//		deixe um contrutor vazio
 	}
 
-	public Inscritos(long id_inscritos, long id_atividades) {
-		super();
+	public Inscritos(long id_inscritos, List<Atividades> listAtividade) {
 		this.id_inscritos = id_inscritos;
-		this.id_atividades = id_atividades;
-	}
-
-	public Inscritos(long id_inscritos) {
-		super();
-		this.id_inscritos = id_inscritos;
+		this.listAtividade = listAtividade;
 	}
 
 	public long getId_inscritos() {
@@ -28,12 +31,13 @@ public class Inscritos {
 		this.id_inscritos = id_inscritos;
 	}
 
-	public long getId_atividades() {
-		return id_atividades;
+	
+	public List<Atividades> getListAtividade() {
+		return listAtividade;
 	}
 
-	public void setId_atividades(long id_atividades) {
-		this.id_atividades = id_atividades;
+	public void setListAtividade(List<Atividades> listAtividade) {
+		this.listAtividade = listAtividade;
 	}
 
 	@Override
@@ -60,7 +64,7 @@ public class Inscritos {
 
 	@Override
 	public String toString() {
-		return "Inscritos [id_inscritos=" + id_inscritos + ", id_atividades="
-				+ id_atividades + "]";
+		return "Inscritos [id_inscritos=" + id_inscritos + ", listAtividade="
+				+ listAtividade.toString() + "]";
 	}
 }

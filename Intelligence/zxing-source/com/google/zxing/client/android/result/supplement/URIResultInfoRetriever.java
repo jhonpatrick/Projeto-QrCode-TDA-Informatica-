@@ -20,9 +20,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import br.com.intelligence.R;
 import android.content.Context;
 import android.widget.TextView;
-import br.com.intelligence.R;
 
 import com.google.zxing.client.android.HttpHelper;
 import com.google.zxing.client.android.history.HistoryManager;

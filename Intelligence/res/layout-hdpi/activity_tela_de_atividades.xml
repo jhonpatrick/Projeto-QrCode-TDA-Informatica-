@@ -25,7 +25,7 @@
             android:gravity="center"
             android:text="@string/info2"
             android:textColor="@color/seashell4"
-            android:textSize="19sp" />
+            android:textSize="20sp" />
 
         <Spinner
             android:id="@+id/spn_eventos"
@@ -37,8 +37,7 @@
             android:contentDescription="@string/info_eventos"
             android:layout_marginTop="14dp"
             android:textColor="@color/seashell4"
-            android:textSize="19sp"
-            
+            android:textSize="20sp"
             android:prompt="@string/info_eventos" />
 
         <Spinner
@@ -47,10 +46,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/spn_eventos"
             android:layout_toRightOf="@+id/img_atividade"
+            android:layout_alignParentRight="true"
             android:contentDescription="@string/info_atividade"
             android:layout_marginTop="14dp"
             android:textColor="@color/seashell4"
-            android:textSize="19sp"
+            android:textSize="20sp"
             android:prompt="@string/info_atividade" />
 
         <TextView
@@ -63,7 +63,7 @@
             android:gravity="center"
             android:text="@string/info1"
             android:textColor="@color/seashell4"
-            android:textSize="19sp" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/button1"
@@ -80,7 +80,7 @@
             android:background="@drawable/selector_botao_logar"
             android:onClick="iniciar"
             android:text="@string/iniciar"
-            android:textSize="19sp" />
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/img_eventos"

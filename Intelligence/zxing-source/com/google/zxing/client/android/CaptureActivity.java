@@ -24,7 +24,9 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Map;
 
-import model.Inscritos;
+import model.Inscricao;
+import br.com.intelligence.R;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -33,7 +35,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -42,7 +43,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,13 +50,10 @@ import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import br.com.intelligence.R;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
@@ -68,11 +65,10 @@ import com.google.zxing.client.android.clipboard.ClipboardInterface;
 import com.google.zxing.client.android.history.HistoryActivity;
 import com.google.zxing.client.android.history.HistoryItem;
 import com.google.zxing.client.android.history.HistoryManager;
-import com.google.zxing.client.android.result.ResultButtonListener;
 import com.google.zxing.client.android.result.ResultHandler;
 import com.google.zxing.client.android.result.ResultHandlerFactory;
-import com.google.zxing.client.android.result.supplement.SupplementalInfoRetriever;
 
+import dao.InscricoesDAO;
 import dao.InscritosDAO;
 
 /**
@@ -123,12 +119,14 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 	private BeepManager beepManager;
 	private AmbientLightManager ambientLightManager;
 	// data
-	private String DATA_SISTEMA = getDateTime().toString();
+	private String data_sistema = getDateTime().toString();
 	private ProgressDialog dialog;
 	private AlertDialog alertDialog;
 	private String dados_recolhidos;
-	private InscritosDAO inscDAO;
+	private InscritosDAO inscritosDAO;
+	private InscricoesDAO inscricoesDAO;
 	public static final int REQUEST_CODE = 0;
+	public static final String PREF_NAME = "PreferenciasLogin";
 
 	ViewfinderView getViewfinderView() {
 		return viewfinderView;
@@ -154,9 +152,10 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 		historyManager = new HistoryManager(this);
 		historyManager.trimHistory();
 		inactivityTimer = new InactivityTimer(this);
-		//qrNaoEncontrado = new BeepManagerQrNaoEncontrado(this);
+		// qrNaoEncontrado = new BeepManagerQrNaoEncontrado(this);
 		ambientLightManager = new AmbientLightManager(this);
-		inscDAO = new InscritosDAO(this);
+		inscritosDAO = new InscritosDAO(this);
+		inscricoesDAO = new InscricoesDAO(this);
 		beepManager = new BeepManager(this);
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 	}
@@ -341,7 +340,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 		return super.onKeyDown(keyCode, event);
 	}
 
-	// desativando menu de opções
+	// menu de opções
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
@@ -357,8 +356,9 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 		this.finishActivity(0);
 	}
 
+	@SuppressLint("SimpleDateFormat")
 	private String getDateTime() {
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		return dateFormat.format(date);
 	}
@@ -370,6 +370,9 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 		switch (item.getItemId()) {
 		case R.id.menu_history:
 			intent.setClassName(this, HistoryActivity.class.getName());
+			Bundle bundle = new Bundle();
+			bundle.putString("envia_dados", "");
+			intent.putExtras(bundle);
 			startActivityForResult(intent, HISTORY_REQUEST_CODE);
 			break;
 		default:
@@ -398,7 +401,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 				dados_recolhidos = "Resultado do SCANER: "
 						+ extras.getString("SCAN_RESULT") + "( "
 						+ extras.getString("SCAN_FORMAT") + ")";
-				Log.d("dados", dados_recolhidos);
+				Log.i("Script", dados_recolhidos.toString());
 			}
 
 		}
@@ -463,41 +466,22 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 	public void handleDecode(final Result rawResult, Bitmap barcode,
 			float scaleFactor) {
 
-		// ese código está editado...
+		// Leirura e resultado do scan
 		Intent intent = getIntent();
 		intent.putExtra("SCAN_RESULT", rawResult.getText());
 		intent.putExtra("SCAN_FORMAT", rawResult.getBarcodeFormat().toString());
-		intent.putExtra("DATA_SISTEMA", DATA_SISTEMA);
+		intent.putExtra("data_sistema", data_sistema.toString());
 
 		setResult(Activity.RESULT_OK, intent);
 		inactivityTimer.onActivity();
 		lastResult = rawResult;
-		final ResultHandler resultHandler = ResultHandlerFactory
-				.makeResultHandler(this, rawResult);
+		ResultHandler resultHandler = ResultHandlerFactory.makeResultHandler(
+				this, rawResult);
 
 		// verificando dado que foi lido!
 		boolean fromLiveScan = barcode != null;
 		if (fromLiveScan) {
 			beepManager.playBeepSoundAndVibrate();
-			String dado = rawResult.getText();
-			try {
-				long insc = Long.parseLong(dado.toString());
-				Inscritos busca_insc = inscDAO.buscarDado(insc);
-				if(busca_insc.toString() != null && !busca_insc.equals(null)){
-					Log.i("Script", dado + " foi encontrado no 1º teste!");
-					Toast.makeText(getBaseContext(), R.string.toast_qr_valido, Toast.LENGTH_LONG).show();
-					historyManager.addHistoryItem(rawResult, resultHandler);
-				}
-			} catch (Exception e) {
-				// TODO: handle exception
-				Log.i("Script", "Erro na busca! " + e.getMessage());
-				//qrNaoEncontrado.qrNaoEncontrado();
-				Log.i("Script", "Qr Code inválido! Diferente do padrão! " + e.getMessage());
-				Log.i("Script", dado + " não foi encontrado! no 2ª teste");
-				Toast.makeText(getBaseContext(), R.string.toast_qr_invalido, Toast.LENGTH_LONG).show();
-				
-			}
-			
 			drawResultPoints(barcode, scaleFactor, rawResult);
 			switch (source) {
 			case NATIVE_APP_INTENT:
@@ -508,7 +492,8 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 			case ZXING_LINK:
 				if (scanFromWebPageManager == null
 						|| !scanFromWebPageManager.isScanFromWebPage()) {
-					handleDecodeInternally(rawResult, resultHandler, barcode);
+					// handleDecodeInternally(rawResult, resultHandler,
+					// barcode);
 				} else {
 					handleDecodeExternally(rawResult, resultHandler, barcode);
 					restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
@@ -520,67 +505,53 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 				if (fromLiveScan
 						&& prefs.getBoolean(PreferencesActivity.KEY_BULK_MODE,
 								false)) {
-					Toast.makeText(
-							getApplicationContext(),
-							getResources().getString(
-									R.string.msg_bulk_mode_scanned)
-									+ " (" + rawResult.getText() + ')',
-							Toast.LENGTH_SHORT).show();
 					// Wait a moment or else it will scan the same barcode
 					// continuously about 3 times
 					restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
 				} else {
-					handleDecodeInternally(rawResult, resultHandler, barcode);
-					restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
+					String dado = rawResult.getText();
+					Inscricao inscricao = null;
+					try {
+						SharedPreferences preferenciasUser = getSharedPreferences(
+								PREF_NAME, MODE_PRIVATE);
+						SharedPreferences.Editor editor = preferenciasUser
+								.edit();
+
+						long insc = Long.parseLong(dado.toString());
+
+						String atv = preferenciasUser.getString("idAtividade",
+								"");
+						long idAtividade = Long.parseLong(atv);
+						inscricao = inscricoesDAO.buscarInscricao(insc,
+								idAtividade);
+						if (inscricao.toString() != null
+								&& !inscricao.equals(null)) {
+							Log.i("Script", inscricao.toString()
+									+ " foi encontrado!");
+							historyManager.addHistoryItem(rawResult,
+									resultHandler, data_sistema.toString());
+							Toast.makeText(getBaseContext(),
+									R.string.toast_qr_valido, Toast.LENGTH_LONG)
+									.show();
+							restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
+						}
+					} catch (Exception e) {
+						// TODO: handle exception
+						Log.i("Script", "Erro na busca! " + e.getMessage());
+						Log.i("Script",
+								"incricao inválido! Diferente do padrão! "
+										+ e.getMessage());
+						Log.i("Script", "inscricao não foi encontrado!");
+						// Toast.makeText(getBaseContext(),
+						// R.string.toast_qr_invalido,
+						// Toast.LENGTH_LONG).show();
+						qrNaoEncontrado();
+					}
+
 				}
 				break;
 			}
 		}
-	}
-
-	public void verificaQr(final Result qr, final ResultHandler resultHandler) {
-		// fazer busca, localizar o qr que foi lido (verificar se o qr lido é
-		// realmente desse minicurso)
-		try {
-			dialog = new ProgressDialog(getBaseContext(), 3);
-			dialog.setTitle("Verificando Qr Code");
-			dialog.show();
-//			if (inscrito) {
-//				dialog.setTitle("Qr Code válido!");
-//				Log.i("Script", "inscrito encontrado");
-//				historyManager.addHistoryItem(qr, resultHandler);
-//				dialog.dismiss();
-//
-//			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			Log.i("Script", "Erro! " + e.getMessage());
-			qr_invalido();
-		}
-	}
-
-	public void qr_invalido() {
-		dialog.setTitle("Qr Code inválido!");
-		dialog.dismiss();
-		AlertDialog.Builder builder = new AlertDialog.Builder(
-				getBaseContext(), 3);
-		builder.setTitle("Aviso!");
-		builder.setMessage("O Qr Code lido está com problemas ou"
-				+ "\n"
-				+ "não foi possivél encontra-lo."
-				+ "Por favor, contate imediatamente um dos admistradores, para tratar seu problema!");
-		Log.i("Script", "inscrito não encontrado");
-		alertDialog = builder.create();
-		alertDialog.show();
-		builder.setNegativeButton("Fechar", new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-
-				alertDialog.dismiss();
-			}
-		});
 	}
 
 	private void drawResultPoints(Bitmap barcode, float scaleFactor,
@@ -620,89 +591,21 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 		}
 	}
 
-	// Put up our own UI for how to handle the decoded contents.
-	private void handleDecodeInternally(Result rawResult,
-			ResultHandler resultHandler, Bitmap barcode) {
-		statusView.setVisibility(View.GONE);
-		viewfinderView.setVisibility(View.GONE);
-		resultView.setVisibility(View.VISIBLE);
-
-		ImageView barcodeImageView = (ImageView) findViewById(R.id.barcode_image_view);
-		if (barcode == null) {
-			barcodeImageView.setImageBitmap(BitmapFactory.decodeResource(
-					getResources(), R.drawable.launcher_icon));
-		} else {
-			barcodeImageView.setImageBitmap(barcode);
-		}
-
-		TextView formatTextView = (TextView) findViewById(R.id.format_text_view);
-		formatTextView.setText(rawResult.getBarcodeFormat().toString());
-
-		TextView typeTextView = (TextView) findViewById(R.id.type_text_view);
-		typeTextView.setText(resultHandler.getType().toString());
-
-		DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT,
-				DateFormat.SHORT);
-		TextView timeTextView = (TextView) findViewById(R.id.time_text_view);
-		timeTextView
-				.setText(formatter.format(new Date(rawResult.getTimestamp())));
-
-		TextView metaTextView = (TextView) findViewById(R.id.meta_text_view);
-		View metaTextViewLabel = findViewById(R.id.meta_text_view_label);
-		metaTextView.setVisibility(View.GONE);
-		metaTextViewLabel.setVisibility(View.GONE);
-		Map<ResultMetadataType, Object> metadata = rawResult
-				.getResultMetadata();
-		if (metadata != null) {
-			StringBuilder metadataText = new StringBuilder(20);
-			for (Map.Entry<ResultMetadataType, Object> entry : metadata
-					.entrySet()) {
-				if (DISPLAYABLE_METADATA_TYPES.contains(entry.getKey())) {
-					metadataText.append(entry.getValue()).append('\n');
-				}
+	public void qrNaoEncontrado() {
+		AlertDialog.Builder alerta = new AlertDialog.Builder(this, 3);
+		alerta.setTitle(this.getResources().getString(R.string.alerta_atencao));
+		alerta.setMessage(getBaseContext().getResources().getString(
+				R.string.toast_qr_invalido));
+		alerta.setIcon(android.R.drawable.ic_dialog_alert);
+		alerta.setCancelable(true);
+		alerta.setNegativeButton(R.string.voltar, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
 			}
-			if (metadataText.length() > 0) {
-				metadataText.setLength(metadataText.length() - 1);
-				metaTextView.setText(metadataText);
-				metaTextView.setVisibility(View.VISIBLE);
-				metaTextViewLabel.setVisibility(View.VISIBLE);
-			}
-		}
-
-		TextView contentsTextView = (TextView) findViewById(R.id.contents_text_view);
-		CharSequence displayContents = resultHandler.getDisplayContents();
-		contentsTextView.setText(displayContents);
-		// Crudely scale betweeen 22 and 32 -- bigger font for shorter text
-		int scaledSize = Math.max(22, 32 - displayContents.length() / 4);
-		contentsTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaledSize);
-
-		TextView supplementTextView = (TextView) findViewById(R.id.contents_supplement_text_view);
-		supplementTextView.setText("");
-		supplementTextView.setOnClickListener(null);
-		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
-				PreferencesActivity.KEY_SUPPLEMENTAL, true)) {
-			SupplementalInfoRetriever.maybeInvokeRetrieval(supplementTextView,
-					resultHandler.getResult(), historyManager, this);
-		}
-
-		int buttonCount = resultHandler.getButtonCount();
-		ViewGroup buttonView = (ViewGroup) findViewById(R.id.result_button_view);
-		buttonView.requestFocus();
-		for (int x = 0; x < ResultHandler.MAX_BUTTON_COUNT; x++) {
-			TextView button = (TextView) buttonView.getChildAt(x);
-			if (x < buttonCount) {
-				button.setVisibility(View.VISIBLE);
-				button.setText(resultHandler.getButtonText(x));
-				button.setOnClickListener(new ResultButtonListener(
-						resultHandler, x));
-			} else {
-				button.setVisibility(View.GONE);
-			}
-		}
-
-		if (copyToClipboard && !resultHandler.areContentsSecure()) {
-			ClipboardInterface.setText(displayContents, this);
-		}
+		});
+		alerta.show();
 	}
 
 	// Briefly show the contents of the barcode, then handle the result outside

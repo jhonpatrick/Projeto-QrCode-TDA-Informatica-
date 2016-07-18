@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
+import br.com.intelligence.R;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -34,7 +35,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
-import br.com.intelligence.R;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;

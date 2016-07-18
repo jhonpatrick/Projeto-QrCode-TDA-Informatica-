@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import br.com.intelligence.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -38,7 +39,6 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import br.com.intelligence.R;
 
 import com.google.zxing.WriterException;
 import com.google.zxing.client.android.Contents;

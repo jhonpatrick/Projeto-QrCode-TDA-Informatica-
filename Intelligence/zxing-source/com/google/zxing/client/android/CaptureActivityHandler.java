@@ -19,6 +19,7 @@ package com.google.zxing.client.android;
 import java.util.Collection;
 import java.util.Map;
 
+import br.com.intelligence.R;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -32,7 +33,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Browser;
 import android.util.Log;
-import br.com.intelligence.R;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;

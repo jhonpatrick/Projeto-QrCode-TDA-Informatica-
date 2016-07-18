@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import br.com.intelligence.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -39,7 +40,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import br.com.intelligence.R;
 
 import com.google.zxing.client.android.HttpHelper;
 import com.google.zxing.client.android.Intents;

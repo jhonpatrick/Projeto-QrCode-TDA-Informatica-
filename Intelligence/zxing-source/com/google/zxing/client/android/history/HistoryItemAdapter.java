@@ -18,6 +18,7 @@ package com.google.zxing.client.android.history;
 
 import java.util.ArrayList;
 
+import br.com.intelligence.R;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -26,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import br.com.intelligence.R;
 
 import com.google.zxing.Result;
 

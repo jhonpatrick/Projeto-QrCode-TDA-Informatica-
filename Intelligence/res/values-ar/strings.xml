@@ -16,7 +16,9 @@
 -->
 <resources>
 
-    <string name="app_name">ذكاء</string>
+    <!-- Árabe -->
+    
+    <string name="app_name">Intelligence</string>
     <string name="app_picker_name">تطبيقات</string>
     <string name="bookmark_picker_name">إشارات مرجعية</string>
     <string name="button_add_calendar">إضافة إلى التقويم</string>
@@ -169,8 +171,8 @@
     <string name="compartilhar">سهم</string>
     <string name="preferencias">التفضيلات</string>
     <string name="ajuda">مساعدة</string>
-    <string name="enviar">إرسال جميع</string>
-    <string name="apagar">حذف جميع</string>
+    <string name="enviar_todos">إرسال جميع?</string>
+    <string name="apagar_todos">حذف جميع?</string>
     <string name="nao_implementado">وظيفة لم تنفذ .</string>
     <string name="historico_com_dados">وجدنا أن هناك بيانات في تاريخكم .</string>
 
@@ -179,4 +181,38 @@
     <string name="menu_intelligence_sair">ترك</string>
     <string name="history_enviar_um">إرسال</string>
 
+    
+     <string name="novo_registro">سجل الجديدة</string>
+    <!-- informações de Toast -->
+    <string name="toast_saiu_app">تركت المخابرات</string>
+    <string name="toast_login_invalido">تسجيل الدخول غير صالح !</string>
+	<string name="toast_info_sem_net">أنت غير متصل بأي شبكة! تحقق من اتصال الإنترنت الخاص بك</string>
+	<string name="toast_is_net_wifi">اتصال WiFi!</string>
+	<string name="toast_is_net_3g">الجيل الثالث 3G متصلة!</string>
+	<string name="toast_qr_valido">رمز الاستجابة السريعة صالح. ما عدا في التاريخ!</string>
+	<string name="toast_qr_invalido">رمز الاستجابة السريعة باطلة! اتصل إدارة الحدث. شكرا لك!</string>
+	<string name="toast_envia_dado_acima">ارسال ما يصل البيانات!</string>
+	<string name="toast_dados_enviados">أرسلت البيانات بنجاح!</string>
+	<string name="toast_dados_nao_enviados">خطأ إرسال البيانات. حاول مرة أخرى!</string>
+	<string name="toast_dado_enviado">نظرا إرسالها بنجاح!</string>
+	<string name="toast_dado_nao_enviado">خطأ في إرسال البيانات. حاول مرة أخرى!</string>
+	
+	<!--  informações de alerta -->
+	<string name="alerta_logando">دخولك!</string>
+	<string name="alerta_carrega_dados">تفاصيل تحميل ...</string>
+	<string name="alerta_login_sucesso">تسجيل الدخول بنجاح في!</string>
+	<string name="alerta_deseja_envialos">هل تريد أن ترسل لهم؟</string>
+	<string name="alerta_enviando_dados">إرسال البيانات!</string>
+	<string name="alerta_dados_sendo_enviados">البيانات التي يتم إرسالها!</string>
+	<string name="alerta_atencao">تحذير!</string>
+	<string name="alerta_deseja_sair">هل تريد حقا أن تترك؟</string>
+	<string name="alerta_cancelar">إلغاء</string>
+	<string name="alerta_enviar_dado">ترسل بالنظر؟</string>
+	<string name="alerta_enviando_dado">إرسال البيانات!</string>
+	<string name="alerta_dado_sendo_enviado">منذ أن أرسلت!</string>
+	<string name="alerta_erro">خطأ!</string>
+	<string name="alerta_erro_ao_enviar_dados">حدث خطأ أثناء محاولة إرسال البيانات!</string>
+	<string name="alerta_atividade_selecionada_anteriormente">وجدنا أن هناك بيانات مع نشاط آخر ليتم إرسالها.
+إذا أردت أن ترسل لهم قبل اختيار نشاط آخر.</string>
+    
 </resources>

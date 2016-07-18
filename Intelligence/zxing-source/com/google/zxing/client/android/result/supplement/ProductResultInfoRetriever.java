@@ -21,10 +21,10 @@ import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import br.com.intelligence.R;
 import android.content.Context;
 import android.text.Html;
 import android.widget.TextView;
-import br.com.intelligence.R;
 
 import com.google.zxing.client.android.HttpHelper;
 import com.google.zxing.client.android.LocaleManager;

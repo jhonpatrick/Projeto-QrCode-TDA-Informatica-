@@ -16,6 +16,7 @@
 
 package com.google.zxing.client.android.share;
 
+import br.com.intelligence.R;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -30,7 +31,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import br.com.intelligence.R;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.android.Contents;

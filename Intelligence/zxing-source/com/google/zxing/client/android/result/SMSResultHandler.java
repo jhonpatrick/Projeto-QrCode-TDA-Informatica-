@@ -16,9 +16,9 @@
 
 package com.google.zxing.client.android.result;
 
+import br.com.intelligence.R;
 import android.app.Activity;
 import android.telephony.PhoneNumberUtils;
-import br.com.intelligence.R;
 
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.SMSParsedResult;

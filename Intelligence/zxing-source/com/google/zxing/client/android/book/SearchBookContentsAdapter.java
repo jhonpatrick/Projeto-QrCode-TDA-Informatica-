@@ -18,12 +18,12 @@ package com.google.zxing.client.android.book;
 
 import java.util.List;
 
+import br.com.intelligence.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import br.com.intelligence.R;
 
 /**
  * Manufactures list items which represent SBC results.

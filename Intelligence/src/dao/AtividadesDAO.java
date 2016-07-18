@@ -4,156 +4,220 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Atividades;
+import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.google.zxing.client.android.history.DBHelper;
 
-public class AtividadesDAO {
-	
-	private SQLiteDatabase db = null;
-	private DBHelper helper;
-	private Cursor cursor;
+public final class AtividadesDAO {
+
 	private int indexId;
 	private int indexNome;
 	private int indexIdEventos;
+	private Cursor cursor;
+	private final Activity activity;
 
-	public AtividadesDAO(Context context) {
-		helper = new DBHelper(context);
+	public AtividadesDAO(Activity activity) {
+		this.activity = activity;
+	}
+
+	private static void close(Cursor cursor, SQLiteDatabase database) {
+		if (cursor != null) {
+			cursor.close();
+		}
+		if (database != null) {
+			database.close();
+		}
 	}
 
 	// implementando os metodo de inserir
 	public String inserirAtv(Atividades atv) {
-		ContentValues valores; 
-		long resultado; 
-		db = helper.getWritableDatabase(); 
-		valores = new ContentValues(); 
-		valores.put(helper.ID_ATIVIDADE, atv.get_id()); 
-		valores.put(helper.NOME_ATIVIDADE, atv.getNome());
-		valores.put(helper.ID_EVENTO_ATV, atv.getId_evento());
-		resultado = db.insert(helper.ATIVIDADES, null, valores); 
-		db.close(); 
-		if (resultado ==-1) return "Erro ao inserir registro"; 
-		else {
-			return "Registro Inserido com sucesso”"; 
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
+		ContentValues valores;
+		long resultado;
+		valores = new ContentValues();
+		valores.put(DBHelper.ID_ATIVIDADE, atv.getId());
+		valores.put(DBHelper.NOME_ATIVIDADE, atv.getNome());
+		valores.put(DBHelper.ID_EVENTO_ATV, atv.getId_evento());
+//		valores.put(key, value)
+		try {
+			db = helper.getWritableDatabase();
+			resultado = db.insert(DBHelper.ATIVIDADES, null, valores);
+			if (resultado == -1) {
+				Log.i("Script",
+						"Erro ao inserir registro(" + valores.toString() + ")");
+				return "Erro ao inserir registro";
+			} else {
+				Log.i("Script", "Registro(" + valores.toString()
+						+ ") Inserido com sucesso");
+				return "Registro Inserido com sucesso”";
+			}
+		} finally {
+			close(null, db);
 		}
-
 	}
 
 	public boolean deletar(long id) {
-		String where = helper.ID_ATIVIDADE + " = ?";
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
+		String where = DBHelper.ID_ATIVIDADE + " = ?";
 		String _id = String.valueOf(id);
 		String[] whereArgs = new String[] { _id };
-
-		int retorno = this.db.delete(helper.ATIVIDADES, where, whereArgs);
-
-		if (retorno != 0)
-			return true;
-		else
-			return false;
+		try {
+			int retorno = db.delete(DBHelper.ATIVIDADES, where, whereArgs);
+			if (retorno != 0)
+				return true;
+			else
+				return false;
+		} finally {
+			close(null, db);
+		}
 	}
 
 	public boolean atualiza(Atividades atv) {
-		// TODO Auto-generated method stub
-
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
 		ContentValues values = new ContentValues();
-		values.put(helper.ID_ATIVIDADE, atv.get_id());
-		values.put(helper.NOME_ATIVIDADE, atv.getNome());
-		values.put(helper.ID_EVENTO_ATV, atv.getId_evento());
-
-		String where = helper.ID_ATIVIDADE + " = ?";
-		String _id = String.valueOf(atv.get_id());
+		values.put(DBHelper.ID_ATIVIDADE, atv.getId());
+		values.put(DBHelper.NOME_ATIVIDADE, atv.getNome());
+		values.put(DBHelper.ID_EVENTO_ATV, atv.getId_evento());
+		String where = DBHelper.ID_ATIVIDADE + " = ?";
+		String _id = String.valueOf(atv.getId());
 		String[] whereArgs = new String[] { _id };
-
-		int retorno = this.db.update(helper.ATIVIDADES, values, where,
-				whereArgs);
-
-		if (retorno != 0)
-			return true;
-		else
-			return false;
+		try {
+			int retorno = db.update(DBHelper.ATIVIDADES, values, where,
+					whereArgs);
+			if (retorno != 0)
+				return true;
+			else
+				return false;
+		} finally {
+			close(null, db);
+		}
 	}
 
 	public Atividades consultar(long id) {
-		// TODO Auto-generated method stub
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
 		Atividades atv;
-		String[] columns = new String[] { helper.ID_ATIVIDADE,
-				helper.NOME_ATIVIDADE, helper.ID_EVENTO_ATV };
+		String[] columns = new String[] { DBHelper.ID_ATIVIDADE,
+				DBHelper.NOME_ATIVIDADE, DBHelper.ID_EVENTO_ATV };
 		String _id = String.valueOf(id);
 		String[] args = new String[] { _id };
-		Cursor c = db.query(helper.ATIVIDADES, columns, "nome = ?", args, null,
-				null, "nome");
-
-		c.moveToFirst();
-		atv = new Atividades();
-		atv.set_id(c.getLong(0));
-		atv.setNome(c.getString(1));
-		atv.setId_evento(c.getLong(2));
-		return atv;
-
+		try {
+			cursor = db.query(DBHelper.ATIVIDADES, columns,
+					DBHelper.NOME_ATIVIDADE + " = ?", args, null, null, "nome");
+			cursor.moveToFirst();
+			atv = new Atividades();
+			atv.setId(cursor.getLong(0));
+			atv.setNome(cursor.getString(1));
+			atv.setId_evento(cursor.getLong(2));
+			return atv;
+		} finally {
+			close(cursor, db);
+		}
 	}
 
 	public void configuraIndex() {
-		this.indexId = this.cursor.getColumnIndex(helper.ID_EVENTO);
-		this.indexNome = this.cursor.getColumnIndex(helper.NOME_EVENTO);
-		this.indexIdEventos = this.cursor.getColumnIndex(helper.ID_EVENTO_ATV);
+		this.indexId = this.cursor.getColumnIndex(DBHelper.ID_EVENTO);
+		this.indexNome = this.cursor.getColumnIndex(DBHelper.NOME_EVENTO);
+		this.indexIdEventos = this.cursor
+				.getColumnIndex(DBHelper.ID_EVENTO_ATV);
 	}
 
 	public Cursor carregaDados() {
-		Cursor c;
-		String[] campos = { helper.ID_ATIVIDADE, helper.NOME_ATIVIDADE, helper.ID_EVENTO_ATV};
-		db = helper.getReadableDatabase();
-		c = db.query(helper.ATIVIDADES, campos, null, null, null, null, null,
-				null);
-		if (c != null) {
-			c.moveToFirst();
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
+		String[] campos = { DBHelper.ID_ATIVIDADE, DBHelper.NOME_ATIVIDADE,
+				DBHelper.ID_EVENTO_ATV };
+		try {
+			db = helper.getReadableDatabase();
+			cursor = db.query(DBHelper.ATIVIDADES, campos, null, null, null,
+					null, null, null);
+			if (cursor != null) {
+				cursor.moveToFirst();
+			}
+			return cursor;
+		} finally {
+			close(cursor, db);
 		}
-		db.close();
-		return cursor;
 	}
 
 	public Atividades listarPorId(String id) {
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
 		Atividades atv = null;
-
-		this.cursor = this.db.rawQuery("SELECT * FROM " + helper.ATIVIDADES
-				+ "WHERE _id = '%d'", null);
 		configuraIndex();
-
-		if (this.cursor.moveToFirst()) {
-			atv = new Atividades(
-					this.cursor.getLong(this.indexId),
-					this.cursor.getString(this.indexNome),
-					this.cursor.getLong(this.indexIdEventos));
+		try {
+			this.cursor = db.rawQuery("SELECT * FROM " + DBHelper.ATIVIDADES
+					+ "WHERE _id = '%d'", null);
+			if (this.cursor.moveToFirst()) {
+				atv = new Atividades(this.cursor.getLong(this.indexId),
+						this.cursor.getString(this.indexNome),
+						this.cursor.getLong(this.indexIdEventos));
+			}
+			return atv;
+		} finally {
+			close(null, db);
 		}
-
-		return atv;
-	}
-
-	public void deletarTabelaAtividades(Atividades atv) {
-		db = helper.getReadableDatabase();
-		db.delete(helper.ATIVIDADES, null, null);
 	}
 
 	public List<String> listarNomesAtividades(String nomeEvt) {
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
 		List<String> s = new ArrayList<String>();
-		db = helper.getWritableDatabase();
-		Cursor c = db.rawQuery("SELECT " + helper.ATIVIDADES+"."+helper.NOME_ATIVIDADE +
-				" FROM " + helper.ATIVIDADES + 
-				" WHERE " + helper.ATIVIDADES+"."+helper.ID_EVENTO_ATV + 
-				" in (SELECT " + helper.EVENTOS+"."+helper.ID_EVENTO + 
-				" FROM " + helper.EVENTOS + 
-				" WHERE " + helper.EVENTOS+"."+helper.NOME_EVENTO + " = '" + nomeEvt + "')", null);
-		/*
-select atividade.nome_atividade from atividade where atividade.id_evento 
-in (select evento.id_evento from evento where evento.nome_evento = nomeAtv);
-		 */
-		while (c != null  && c.moveToNext()) {
-			s.add(c.getString(c.getColumnIndex(helper.NOME_ATIVIDADE)));
+		try {
+			db = helper.getWritableDatabase();
+			cursor = db.rawQuery("SELECT " + DBHelper.ATIVIDADES + "."
+					+ DBHelper.NOME_ATIVIDADE + " FROM " + DBHelper.ATIVIDADES
+					+ " WHERE " + DBHelper.ATIVIDADES + "."
+					+ DBHelper.ID_EVENTO_ATV + " in (SELECT "
+					+ DBHelper.EVENTOS + "." + DBHelper.ID_EVENTO + " FROM "
+					+ DBHelper.EVENTOS + " WHERE " + DBHelper.EVENTOS + "."
+					+ DBHelper.NOME_EVENTO + " = '" + nomeEvt + "')", null);
+			while (cursor != null && cursor.moveToNext()) {
+				s.add(cursor.getString(cursor
+						.getColumnIndex(DBHelper.NOME_ATIVIDADE)));
+			}
+			return s;
+		} finally {
+			close(cursor, db);
 		}
-		c.close();
-		return s;
 	}
-	
+
+	public String pegaId(String nomeAtv) {
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
+		try {
+			db = helper.getReadableDatabase();
+			cursor = db.rawQuery("SELECT " + DBHelper.ID_ATIVIDADE + " FROM "
+					+ DBHelper.ATIVIDADES + " WHERE " + DBHelper.NOME_ATIVIDADE
+					+ " = '" + nomeAtv + "'", null);
+			if (cursor != null && cursor.moveToFirst()) {
+				return cursor.getString(cursor
+						.getColumnIndex(DBHelper.ID_ATIVIDADE));
+
+			} else {
+				return "Atividade not found!";
+			}
+		} finally {
+			close(cursor, db);
+		}
+	}
+
+	public void clearAtividades() {
+		SQLiteOpenHelper helper = new DBHelper(activity);
+		SQLiteDatabase db = null;
+		try {
+			db = helper.getWritableDatabase();
+			db.delete(DBHelper.ATIVIDADES, null, null);
+		} finally {
+			close(null, db);
+		}
+	}
 }

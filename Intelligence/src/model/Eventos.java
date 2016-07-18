@@ -1,32 +1,34 @@
 package model;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName="eventos")
 public class Eventos {
-	
-	private long _id;
+	@DatabaseField(id=true)
+	private long id;
+	@DatabaseField
 	private String nome;
-	
+
 	public Eventos() {
-		super();
-		// TODO Auto-generated constructor stub
+//		deixe um contrutor vazio
 	}
 
-	public Eventos(long _id, String nome) {
-		super();
-		this._id = _id;
+	public Eventos(long id, String nome) {
+		this.id = id;
 		this.nome = nome;
 	}
 
 	public Eventos(String nome) {
-		super();
 		this.nome = nome;
 	}
 
-	public long get_id() {
-		return _id;
+	public long getId() {
+		return id;
 	}
 
-	public void set_id(long _id) {
-		this._id = _id;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -41,7 +43,7 @@ public class Eventos {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (_id ^ (_id >>> 32));
+		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
 
@@ -54,13 +56,13 @@ public class Eventos {
 		if (getClass() != obj.getClass())
 			return false;
 		Eventos other = (Eventos) obj;
-		if (_id != other._id)
+		if (id != other.id)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Eventos [_id=" + _id + ", nome=" + nome + "]";
+		return "Eventos [id=" + id + ", nome=" + nome + "]";
 	}
 }

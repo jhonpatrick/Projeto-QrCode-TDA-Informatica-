@@ -10,5 +10,7 @@
 	<classpathentry kind="lib" path="libs/apache-mime4j-0.6.jar"/>
 	<classpathentry kind="lib" path="libs/core-2.3.0.jar"/>
 	<classpathentry kind="lib" path="libs/httpmime-4.1.1.jar"/>
+	<classpathentry kind="lib" path="libs/ormlite-android-4.49-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="libs/ormlite-core-4.49-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

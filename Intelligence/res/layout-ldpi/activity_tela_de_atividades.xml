@@ -73,6 +73,7 @@
             android:layout_below="@+id/spn_eventos"
             android:contentDescription="@string/info_atividade"
             android:prompt="@string/info_atividade"
+            android:layout_alignParentRight="true"
             android:textColor="@color/seashell4"
             android:layout_marginTop="14dp"
             android:textSize="17sp" />

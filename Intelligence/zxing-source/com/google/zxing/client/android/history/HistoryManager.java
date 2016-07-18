@@ -22,13 +22,13 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -62,8 +62,7 @@ public final class HistoryManager {
 	private static final int MAX_ITEMS = 2000;
 
 	private static final String[] COLUMNS = { DBHelper.TEXT_COL,
-			DBHelper.DISPLAY_COL, DBHelper.FORMAT_COL, DBHelper.TIMESTAMP_COL,
-	};
+			DBHelper.DISPLAY_COL, DBHelper.FORMAT_COL, DBHelper.TIMESTAMP_COL, };
 
 	private static final String[] COUNT_COLUMN = { "COUNT(1)" };
 
@@ -157,7 +156,7 @@ public final class HistoryManager {
 		}
 	}
 
-	public void addHistoryItem(Result result, ResultHandler handler) {
+	public void addHistoryItem(Result result, ResultHandler handler, String data) {
 		// Do not save this item to the history if the preference is turned off,
 		// or the contents are
 		// considered secure.
@@ -179,14 +178,14 @@ public final class HistoryManager {
 		values.put(DBHelper.FORMAT_COL, result.getBarcodeFormat().toString());
 		values.put(DBHelper.DISPLAY_COL, handler.getDisplayContents()
 				.toString());
-		values.put(DBHelper.TIMESTAMP_COL, System.currentTimeMillis());
+		values.put(DBHelper.TIMESTAMP_COL, data.toString());
 
 		SQLiteOpenHelper helper = new DBHelper(activity);
 		SQLiteDatabase db = null;
 		try {
 			db = helper.getWritableDatabase();
 			// Insert the new entry into the DB.
-			db.insert(DBHelper.TABLE_NAME, DBHelper.TIMESTAMP_COL, values);
+			db.insert(DBHelper.TABLE_NAME, null, values);
 		} finally {
 			close(null, db);
 		}
@@ -292,7 +291,7 @@ public final class HistoryManager {
 		}
 	}
 
-	void clearHistory() {
+	public void clearHistory() {
 		SQLiteOpenHelper helper = new DBHelper(activity);
 		SQLiteDatabase db = null;
 		try {
@@ -351,74 +350,95 @@ public final class HistoryManager {
 		SQLiteOpenHelper helper = new DBHelper(activity);
 		SQLiteDatabase db = null;
 		db = helper.getWritableDatabase();
-		Cursor c = db.rawQuery("SELECT " + DBHelper.TEXT_COL + ", " + DBHelper.TIMESTAMP_COL +  " FROM "
-				+ DBHelper.TABLE_NAME, null);
+		Cursor c = db
+				.rawQuery("SELECT " + DBHelper.TEXT_COL + ", "
+						+ DBHelper.TIMESTAMP_COL + " FROM "
+						+ DBHelper.TABLE_NAME, null);
 		if (c != null) {
 			c.moveToFirst();
 			do {
-				String string = c.getString(c.getColumnIndex(DBHelper.TIMESTAMP_COL));
-				Date d = new Date(Long.parseLong(string));
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss", Locale.US);
-				listQr.put(c.getString(c.getColumnIndex(DBHelper.TEXT_COL))); 
-				listQr.put(sdf.format(d));
+				String data = c.getString(c
+						.getColumnIndex(DBHelper.TIMESTAMP_COL));
+				String incri = c.getString(c.getColumnIndex(DBHelper.TEXT_COL));
+				JSONObject inscritos = new JSONObject();
+				try {
+					inscritos.put("id_inscrito", incri.toString());
+					inscritos.put("data_credenciado", data.toString());
+					listQr.put(inscritos);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} while (c.moveToNext());
 		}
 		c.close();
 		return listQr;
 	}
-	
-	public JSONArray listarUmQr(String dado){
+
+	public JSONArray listarUmQr(String dado) {
 		JSONArray listQr = new JSONArray();
 		SQLiteOpenHelper helper = new DBHelper(activity);
 		SQLiteDatabase db = null;
 		Cursor c = null;
 		db = helper.getWritableDatabase();
-		c = db.rawQuery("SELECT " + DBHelper.TEXT_COL + ", " + DBHelper.TIMESTAMP_COL +  " FROM "
-				+ DBHelper.TABLE_NAME + " WHERE " + DBHelper.TEXT_COL + " = '" + dado + "';", null);
-		if(c != null ){
+		c = db.rawQuery("SELECT " + DBHelper.TEXT_COL + ", "
+				+ DBHelper.TIMESTAMP_COL + " FROM " + DBHelper.TABLE_NAME
+				+ " WHERE " + DBHelper.TEXT_COL + " = '" + dado + "';", null);
+		if (c != null) {
 			c.moveToFirst();
-			String string = c.getString(c.getColumnIndex(DBHelper.TIMESTAMP_COL));
-			Date d = new Date(Long.parseLong(string));
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss", Locale.US);
-			listQr.put(c.getString(c.getColumnIndex(DBHelper.TEXT_COL))); 
-			listQr.put(sdf.format(d));
-			c.close();	
+
+			// String data =
+			// c.getString(c.getColumnIndex(DBHelper.TIMESTAMP_COL));
+			String inscr = c.getString(c.getColumnIndex(DBHelper.TEXT_COL));
+
+			JSONObject inscrito = new JSONObject();
+			try {
+				inscrito.put("id_inscrito", inscr.toString());
+				inscrito.put("data_credenciado",
+						c.getString(c.getColumnIndex(DBHelper.TIMESTAMP_COL)));
+				listQr.put(inscrito);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			c.close();
 		}
 		return listQr;
 	}
-	
-	public boolean buscarDado(String dado){
+
+	public boolean buscarDado(String dado) {
 		SQLiteOpenHelper helper = new DBHelper(activity);
 		SQLiteDatabase db = null;
 		Cursor c = null;
 		db = helper.getWritableDatabase();
-		c = db.rawQuery("SELECT " + DBHelper.ID_INSCRITOS + " FROM " + DBHelper.INSCRITOS + 
-				" WHERE " + DBHelper.ID_INSCRITOS + " = '" + dado + "'", null);
-		if(c != null && c.getCount() > 0){
+		c = db.rawQuery("SELECT " + DBHelper.ID_INSCRITOS + " FROM "
+				+ DBHelper.INSCRITOS + " WHERE " + DBHelper.ID_INSCRITOS
+				+ " = '" + dado + "'", null);
+		if (c != null && c.getCount() > 0) {
 			c.moveToFirst();
 			Log.i("Script: ", "Busca encontrada! " + dado);
 			c.close();
 			return true;
-		}else{
+		} else {
 			Log.i("Script: ", "Busca não encontrada! " + dado);
 			c.close();
 			return false;
 		}
 	}
-	
-	public boolean historyIsVazio(){
+
+	public boolean historyIsVazio() {
 		SQLiteOpenHelper helper = new DBHelper(activity);
 		SQLiteDatabase db = null;
 		Cursor c = null;
 		db = helper.getWritableDatabase();
-		c = db.rawQuery("SELECT count(" + DBHelper.ID_COL + ") FROM " + DBHelper.TABLE_NAME, null);
-		if(c != null && 
-				c.moveToFirst() && 
-				c.getInt(0) > 0){
+		c = db.rawQuery("SELECT count(" + DBHelper.ID_COL + ") FROM "
+				+ DBHelper.TABLE_NAME, null);
+		if (c != null && c.moveToFirst() && c.getInt(0) > 0) {
 			Log.i("Script: ", "Contem dados no histórico!");
 			return true;
 		}
 		Log.i("Script: ", "Não contem nunhum dado no histórico!");
 		return false;
 	}
+
 }

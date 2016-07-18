@@ -16,11 +16,11 @@
 
 package com.google.zxing.client.android;
 
+import br.com.intelligence.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.webkit.WebView;
-import br.com.intelligence.R;
 
 /**
  * An HTML-based help screen.

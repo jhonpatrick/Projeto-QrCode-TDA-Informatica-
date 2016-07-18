@@ -19,13 +19,13 @@ package com.google.zxing.client.android;
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
+import br.com.intelligence.R;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import br.com.intelligence.R;
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;

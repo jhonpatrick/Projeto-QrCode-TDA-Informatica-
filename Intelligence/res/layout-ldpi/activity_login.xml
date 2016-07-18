@@ -58,7 +58,7 @@
         android:layout_below="@+id/editTextSenha"
         android:text="@string/Mostrar_senha"
         android:textColor="@color/seashell4"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/buttonLogar"

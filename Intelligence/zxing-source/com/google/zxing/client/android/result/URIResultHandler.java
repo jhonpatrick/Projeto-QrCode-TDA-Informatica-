@@ -18,8 +18,8 @@ package com.google.zxing.client.android.result;
 
 import java.util.Locale;
 
-import android.app.Activity;
 import br.com.intelligence.R;
+import android.app.Activity;
 
 import com.google.zxing.client.android.LocaleManager;
 import com.google.zxing.client.result.ParsedResult;

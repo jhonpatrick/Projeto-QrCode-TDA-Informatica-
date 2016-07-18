@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Locale;
 
+import br.com.intelligence.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -29,7 +30,6 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
-import br.com.intelligence.R;
 
 import com.google.zxing.Result;
 import com.google.zxing.client.android.Contents;
@@ -297,11 +297,11 @@ public abstract class ResultHandler {
 	}
 
 	final void shareByEmail(String contents) {
-		sendEmailFromUri("mailto:", null, null, contents);
+		sendEmailFromUri("intelligence:", null, null, contents);
 	}
 
 	final void sendEmail(String address, String subject, String body) {
-		sendEmailFromUri("mailto:" + address, address, subject, body);
+		sendEmailFromUri("intelligence:" + address, address, subject, body);
 	}
 
 	// Use public Intent fields rather than private GMail app fields to specify

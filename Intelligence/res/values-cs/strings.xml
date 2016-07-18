@@ -14,6 +14,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  -->
+ 
+ <!-- Tcheco -->
 <resources>
   <string name="app_name">Intelligence</string>
   <string name="app_picker_name">Aplikace</string>
@@ -133,4 +135,82 @@
   <string name="wifi_changing_network">Požadující připojení k síti\u2026</string>
   <string name="wifi_ssid_label">Jméno sítě</string>
   <string name="wifi_type_label">Typ</string>
+  
+  <!-- minhas String traduzidas -->
+  
+    <string name="bem_vindo">Be Vítejte na zpravodajské služby!</string>
+    <string name="info1">Před zahájením, řekni Event</string>
+    <string name="info2">a Aktivita.</string>
+    <string name="img_eventos">img_eventos</string>
+    <string name="img_atividade">img činnost</string>
+    <string name="iniciar">Start</string>
+    <string name="login">Přihlášení: </string>
+    <string name="dica_login">Zadejte své přihlašovací údaje</string>
+    <string name="senha">Heslo: </string>
+    <string name="inteligence">image inteligence</string>
+    <string name="dica_senha">Heslo</string>
+    <string name="logar">Vstoupit</string>
+    <string name="limpar">čistý</string>
+    <string name="sair">Zanechat</string>
+    <string name="Mostrar_senha">Ukázat heslo</string>
+    <string name="manter_conectado">Zapamatovat přihlášení</string>
+    <string name="txtvw_ola_user">Dobrý den, </string>
+    
+     <!-- tela de scanner -->
+    <string name="sem_label"></string>
+    <string name="tda_qrcode">Inteligence</string>
+    <string name="ola_usuario">Dobrý den, </string>
+    <string name="info_eventos">dění</string>
+    <string name="info_atividade">činnosti</string>
+    <string name="historico">Historie</string>
+    <string name="title_activity_historico">Historie</string>
+    <string name="leitura">literatura:</string>
+    <string name="voltar">zpáteční</string>
+    <string name="historico_vazio">Seznam historie je prázdný!</string>
+    <string name="compartilhar">Podíl</string>
+    <string name="preferencias">Preference</string>
+    <string name="ajuda">Pomoci</string>
+    <string name="enviar_todos">poslat všechny?</string>
+    <string name="apagar_todos">smazat vše?</string>
+    <string name="nao_implementado">Funkce není implementována.</string>
+    <string name="historico_com_dados">Zjistili jsme, že existují data v historii.</string>
+
+    <!-- menu de opções da tela principal do intelligence -->
+    <string name="menu_intelligence_sobre">Na</string>
+    <string name="menu_intelligence_sair">Zanechat</string>
+    <string name="history_enviar_um">Odeslat</string>
+    
+  
+   <string name="novo_registro">nový rekord</string>
+    <!-- informações de Toast -->
+    <string name="toast_saiu_app">Opustili jste Intelligence</string>
+    <string name="toast_login_invalido">Neplatné přihlašovací!</string>
+	<string name="toast_info_sem_net">Nejste připojeni k žádné síti! Zkontrolujte své připojení k internetu.</string>
+	<string name="toast_is_net_wifi">WiFi Connected!</string>
+	<string name="toast_is_net_3g">3G Connected!</string>
+	<string name="toast_qr_valido">QR kód platný. S výjimkou v historii!</string>
+	<string name="toast_qr_invalido">QR kód neplatný! Obraťte na vedení vaší akce. Děkuji!</string>
+	<string name="toast_envia_dado_acima">Poslat zálohovat data!</string>
+	<string name="toast_dados_enviados">Data úspěšně odeslán!</string>
+	<string name="toast_dados_nao_enviados">Chyba při odesílání dat. Zkuste to znovu!</string>
+	<string name="toast_dado_enviado">Vzhledem k tomu, úspěšně odeslán!</string>
+	<string name="toast_dado_nao_enviado">Chyba při odesílání dat. Zkuste to znovu!</string>
+	
+	<!--  informações de alerta -->
+	<string name="alerta_logando">Přihlášen!</string>
+	<string name="alerta_carrega_dados">Načítání podrobností ...</string>
+	<string name="alerta_login_sucesso">úspěšném přihlášení!</string>
+	<string name="alerta_deseja_envialos">Chcete poslat?</string>
+	<string name="alerta_enviando_dados">Odesílání dat!</string>
+	<string name="alerta_dados_sendo_enviados">Data odesílaná!</string>
+	<string name="alerta_atencao">Varování!</string>
+	<string name="alerta_deseja_sair">Opravdu chcete odejít?</string>
+	<string name="alerta_cancelar">zrušit</string>
+	<string name="alerta_enviar_dado">Odeslat Vzhledem k tomu?</string>
+	<string name="alerta_enviando_dado">Odesílání dat!</string>
+	<string name="alerta_dado_sendo_enviado">Vzhledem k tomu, být poslán!</string>
+	<string name="alerta_erro">Chyba!</string>
+	<string name="alerta_erro_ao_enviar_dados">Chyba při pokusu o odeslání dat!</string>
+	<string name="alerta_atividade_selecionada_anteriormente">Zjistili jsme, že existují data s jinou činností, které mají být odeslány.
+Musíte je poslat před zvolte jinou činnost.</string>
 </resources>
